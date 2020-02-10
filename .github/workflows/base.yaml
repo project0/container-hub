@@ -13,6 +13,6 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
-      # This step prints an output (time) from the previous step's action.
-      - name: Echo the greeting's time
-        run: echo 'i am running'
+      - uses: actions/checkout@v2
+      - name: Build the Docker image
+        run: docker build --file Dockerfile --tag my-image-name:$(date +%s) base/
