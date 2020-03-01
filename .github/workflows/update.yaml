@@ -1,0 +1,26 @@
+name: Check security updates
+on:
+
+  # Daily check
+  schedule:
+    - cron: '0 2 * * *'
+
+jobs:
+
+  check:
+    # Job name is Greeting
+    name: Greeting
+    # This job runs on Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      # run check...
+
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          event-type: my-event
+
+      - name: Build the Docker image
+        run: docker build --file Dockerfile --tag my-image-name:$(date +%s) base/
