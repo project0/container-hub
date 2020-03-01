@@ -8,6 +8,7 @@ on:
     paths:
       - "base/*"
       - "build-trigger"
+      - ".github/workflows/base.yaml"
 
 jobs:
   build:
