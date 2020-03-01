@@ -26,5 +26,6 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run: |
-          docker build --file Dockerfile --tag "docker.pkg.github.com${GITHUB_REPOSITORY}/base:$(date +%Y%M%d)-${GITHUB_RUN_NUMBER}" base/
+          echo "build docker.pkg.github.com${GITHUB_REPOSITORY}/base:$(date +%Y%M%d)-${GITHUB_RUN_NUMBER}"
+          docker build --file base/Dockerfile --tag "docker.pkg.github.com${GITHUB_REPOSITORY}/base:$(date +%Y%M%d)-${GITHUB_RUN_NUMBER}" base/
           docker push "docker.pkg.github.com${GITHUB_REPOSITORY}/base:$(date +%Y%M%d)-${GITHUB_RUN_NUMBER}"
