@@ -30,7 +30,7 @@ jobs:
           DOCKER_TAG_LATEST="${DOCKER_REPO}:latest)"
           echo "build ${DOCKER_TAG_RELEASE}"
 
-          docker build --pull --file base/Dockerfile --tag "${DOCKER_TAG_RELEASE},${DOCKER_TAG_LATEST}" base/
+          docker build --pull --file base/Dockerfile --tag "${DOCKER_TAG_RELEASE}" --tag "${DOCKER_TAG_LATEST}" base/
           docker push "${DOCKER_TAG_RELEASE}"
           docker push "${DOCKER_TAG_LATEST}"
 
