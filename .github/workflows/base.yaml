@@ -37,9 +37,9 @@ jobs:
           SEARCH="$(echo $DOCKER_REPO | sed 's#/#\\/#g')"
           find . -iname 'Dockerfile*' -exec perl -i -pe "s/${SEARCH}:(?\!latest).+$/${SEARCH}:${RELEASE_VERSION}/" {} \;
 
-    - name: Release base image
-      uses: stefanzweifel/git-auto-commit-action@v4.1.2
-      if: success()
-      with:
-        commit_message: Update base image version
+      - name: Release base image
+        uses: stefanzweifel/git-auto-commit-action@v4.1.2
+        if: success()
+        with:
+          commit_message: Update base image version
 
