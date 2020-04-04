@@ -8,8 +8,7 @@ on:
 jobs:
 
   check:
-    # Job name is Greeting
-    name: Greeting
+    name: Scheduled update check
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
@@ -19,8 +18,5 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          event-type: my-event
-
-      - name: Build the Docker image
-        run: docker build --file Dockerfile --tag my-image-name:$(date +%s) base/
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: package-updates
