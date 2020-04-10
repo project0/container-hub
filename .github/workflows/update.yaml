@@ -28,11 +28,11 @@ jobs:
         id: check_update
         run: |
           docker pull docker.pkg.github.com/project0/container-action-test/base:latest
-          docker run --rm docker.pkg.github.com/project0/container-action-test/base:latest yum --security check-update
+          docker run --rm docker.pkg.github.com/project0/container-action-test/base:latest yum -q --security check-update
           echo "::set-output name=update_result::$?"
 
       - name: Trigger update
-        if: ${{ (steps.check_update.outputs.update_result == 100) }}
+        if: ${{ (steps.check_update.outputs.update_result == 0) }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
