@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-21 as builder
+FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-23
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -51,7 +51,7 @@ RUN git get-release "${PIGENHOLE_REPO}" "${PIGENHOLE_VERSION}" /src/pigenhole \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM docker.pkg.github.com/project0/container-action-test/base:20200410-21
+FROM docker.pkg.github.com/project0/container-action-test/base:20200410-23
 
 ENV DOVECOT_DHPARAM_BIT=4096
 

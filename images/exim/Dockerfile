@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-21 as builder
+FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-23
 
 ENV DESTDIR="/build/"
 WORKDIR /src
@@ -30,7 +30,7 @@ RUN cd /src/exim/src \
     && touch "${DESTDIR}/etc/exim/exim.conf"
 
 # Build target docker image
-FROM docker.pkg.github.com/project0/container-action-test/base:20200410-21
+FROM docker.pkg.github.com/project0/container-action-test/base:20200410-23
 
 ## install libary deps
 RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb \
