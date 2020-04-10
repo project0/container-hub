@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-24 AS base
+FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-24 AS builder
 
 ENV DESTDIR="/build/"
 WORKDIR /src

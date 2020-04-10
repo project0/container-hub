@@ -1,9 +1,5 @@
 name: Check security updates
 on:
-  push:
-    branches:
-      - master
-
   # Daily check
   schedule:
     - cron: '0 2 * * *'
