@@ -12,6 +12,7 @@ RUN yum fs filter languages en \
     && yum fs filter documentation \
     && yum -y update \
     && yum -y reinstall glibc-common \
+    && yum -y install curl wget which  \
     && yum clean all \
     && rm -rf /var/cache/yum \
     && chmod a+x /extra/bin/*

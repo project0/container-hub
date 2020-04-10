@@ -3,7 +3,7 @@ FROM docker.pkg.github.com/project0/container-action-test/base-devel:20200410-23
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG CLAMAV_VERSION=0.101.1
+ARG CLAMAV_VERSION=0.102.2
 ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 
 RUN yum -y install pcre2-devel libcurl-devel openssl-devel \
