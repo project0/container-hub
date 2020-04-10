@@ -1,14 +1,11 @@
 name: Build base image
 on:
-  repository_dispatch:
-    types: [package-updates]
   push:
     branches:
       - master
     paths:
-      - "base/*"
-      - "build-trigger"
-      - ".github/workflows/base.yaml"
+      - "base/-devel*"
+      - ".github/workflows/base-devel.yaml"
 
 jobs:
   build:
@@ -25,11 +22,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and publish the Docker image
-        run: bash .github/workflows/scripts/build-push.sh base base/Dockerfile
+        run: bash .github/workflows/scripts/build-push.sh base-devel base-devel/Dockerfile
 
-      - name: Release base image
+      - name: Release base-devel image
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
         if: success()
         with:
-          commit_message: Update base image version
+          commit_message: Update base-devel image version
 
