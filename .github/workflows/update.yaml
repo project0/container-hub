@@ -1,5 +1,10 @@
 name: Check security updates
 on:
+  push:
+    branches:
+      - master
+    paths:
+      - "build-trigger-sec"
 
   # Daily check
   schedule:
@@ -18,5 +23,5 @@ jobs:
       - name: Repository Dispatch
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: package-updates
