@@ -1,4 +1,4 @@
-name: Build service image - dovecot
+name: Build service image - Dovecot
 on:
   push:
     branches:

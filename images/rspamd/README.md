@@ -15,7 +15,7 @@ Rspamd supports the json like [universal configuration language](https://rspamd.
 Writes `<name>.inc` or `<name>.conf` configuration files which will be included by the main config per setting or module.
 
 #### Examples
-`RSPAMD_LOGGING='{"type":"console", "level:"info"}'`: overrides the setting of the logging.inc
+`RSPAMD_LOGGING='{"type":"console", "level":"info"}'`: overrides the setting of the logging.inc
 
 `RSPAMD_WORKER_CONTROLLER='{"bind_socket": "*:11333", "enable_password": "$2$jhwxfjmciwauo8m9uc9brhgah6ojocro$zc84ur8kpw65nzs89d4ump6i9crt7yxu3swj4poqu5ijgqj6gygb"}'`: override worker-controller.inc, sets the listener for the web interface and password `test`
 
