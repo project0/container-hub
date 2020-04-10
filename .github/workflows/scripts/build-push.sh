@@ -21,4 +21,4 @@ docker push "${DOCKER_TAG_LATEST}"
 
 # update existing pinned versions
 SEARCH="$(echo $DOCKER_REPO | sed 's#/#\\/#g')"
-find . -iname 'Dockerfile*' -exec perl -i -pe "s/${SEARCH}:(?!latest).+$/${SEARCH}:${RELEASE_VERSION}/" {} \;
+find . -iname 'Dockerfile*' -exec perl -i -pe "s/${SEARCH}:(?!latest)[-_\w]+/${SEARCH}:${RELEASE_VERSION}/" {} \;

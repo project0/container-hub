@@ -21,5 +21,7 @@ jobs:
           username: $GITHUB_ACTOR
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - run: echo '{{ toJSON(github) }}'
+
       - name: Build and publish the base docker image
         run: bash .github/workflows/scripts/build-push.sh clamav images/clamav/Dockerfile
