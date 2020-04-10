@@ -4,7 +4,6 @@ ENV DESTDIR="/build/"
 WORKDIR /src
 
 ARG EXIM_VERSION=exim-4.93.0.4
-LABEL service.version="${EXIM_VERSION}"
 
 ARG EXIM_REPO=https://github.com/Exim/exim.git
 ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386

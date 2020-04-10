@@ -16,12 +16,17 @@ jobs:
     name: Scheduled update check
     # This job runs on Linux
     runs-on: ubuntu-latest
+    container:
+      image: docker.pkg.github.com/project0/container-action-test/base:latest
     steps:
-      - uses: actions/checkout@v2
-      # run check...
+      - name: Check for updates
+        run: |
+          yum --security check-update
+          echo "::set-output name=update_result::$?"
 
-      - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-          event-type: package-updates
+#    steps:
+#      - name: Repository Dispatch
+#        uses: peter-evans/repository-dispatch@v1
+#        with:
+#          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+#          event-type: package-updates
