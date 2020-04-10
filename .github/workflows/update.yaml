@@ -27,12 +27,13 @@ jobs:
       - name: Check for security updates
         id: check_update
         run: |
-          docker pull docker.pkg.github.com/project0/container-action-test/base:latest
-          docker run --rm docker.pkg.github.com/project0/container-action-test/base:latest yum -q --security check-update
+          docker pull docker.pkg.github.com/project0/container-action-test/base-devel:latest
+          docker run --rm docker.pkg.github.com/project0/container-action-test/base-devel:latest yum -q --security check-update
           echo "::set-output name=update_result::$?"
 
       - name: Trigger update
-        if: ${{ (steps.check_update.outputs.update_result == 0) }}
+        # exit code will be 100 if updates are available
+        if: ${{ (steps.check_update.outputs.update_result == 100) }}
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
