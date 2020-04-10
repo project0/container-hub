@@ -1,0 +1,25 @@
+name: Build service image - Exim
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - "images/exim/*"
+      - ".github/workflows/image-exim.yaml"
+
+jobs:
+  build:
+    name: Build and publish docker image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker Login
+        uses: azure/docker-login@v1
+        with:
+          login-server: docker.pkg.github.com
+          username: $GITHUB_ACTOR
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and publish the base docker image
+        run: bash .github/workflows/scripts/build-push.sh exim images/exim/Dockerfile
