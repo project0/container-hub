@@ -23,20 +23,7 @@ jobs:
           username: $GITHUB_ACTOR
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build and publish the Docker image
-        run: |
-          RELEASE_VERSION="$(date +%Y%m%d)-${GITHUB_RUN_NUMBER}"
-          DOCKER_REPO="$(echo "docker.pkg.github.com/${GITHUB_REPOSITORY}/base" | tr '[:upper:]' '[:lower:]')"
-          DOCKER_TAG_RELEASE="${DOCKER_REPO}:${RELEASE_VERSION}"
-          DOCKER_TAG_LATEST="${DOCKER_REPO}:latest"
-          echo "build ${DOCKER_TAG_RELEASE}"
-
-          docker build --pull --file base/Dockerfile --tag "${DOCKER_TAG_RELEASE}" --tag "${DOCKER_TAG_LATEST}" base/
-          docker push "${DOCKER_TAG_RELEASE}"
-          docker push "${DOCKER_TAG_LATEST}"
-
-          SEARCH="$(echo $DOCKER_REPO | sed 's#/#\\/#g')"
-          find . -iname 'Dockerfile*' -exec perl -i -pe "s/${SEARCH}:(?!latest).+$/${SEARCH}:${RELEASE_VERSION}/" {} \;
-
+        run: bash .github/workflows/scripts/build-push.sh base base/Dockerfile
       - name: Release base image
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
         if: success()
