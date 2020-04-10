@@ -1,4 +1,4 @@
-name: Build base image
+name: Build Base image
 on:
   repository_dispatch:
     types: [package-updates]
@@ -24,10 +24,12 @@ jobs:
           username: $GITHUB_ACTOR
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and publish the Docker image
+      - name: Build and publish the base docker image
         run: bash .github/workflows/scripts/build-push.sh base base/Dockerfile
+      - name: Build and publish the developer docker image
+        run: bash .github/workflows/scripts/build-push.sh base-devel base/devel/Dockerfile
 
-      - name: Release base image
+      - name: Release images
         uses: stefanzweifel/git-auto-commit-action@v4.1.2
         if: success()
         with:
