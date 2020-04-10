@@ -6,7 +6,7 @@ on:
     branches:
       - master
     paths:
-      - "base/*"
+      - "base/**"
       - "build-trigger"
       - ".github/workflows/base.yaml"
 

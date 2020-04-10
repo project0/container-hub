@@ -1,11 +1,11 @@
-name: Build service image - Exim
+name: Build service image - dovecot
 on:
   push:
     branches:
       - master
     paths:
-      - "images/exim/**"
-      - ".github/workflows/image-exim.yaml"
+      - "images/dovecot/**"
+      - ".github/workflows/image-dovecot.yaml"
 
 jobs:
   build:
@@ -22,4 +22,4 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and publish the base docker image
-        run: bash .github/workflows/scripts/build-push.sh exim images/exim/Dockerfile
+        run: bash .github/workflows/scripts/build-push.sh dovecot images/dovecot/Dockerfile

@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - "build-trigger-sec"
 
   # Daily check
   schedule:
@@ -38,9 +36,3 @@ jobs:
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: package-updates
-#    steps:
-#      - name: Repository Dispatch
-#        uses: peter-evans/repository-dispatch@v1
-#        with:
-#          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-#          event-type: package-updates
