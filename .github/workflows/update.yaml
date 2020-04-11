@@ -21,8 +21,8 @@ jobs:
       - name: Check for security updates
         id: check_update
         run: |
-          docker pull docker.pkg.github.com/project0/container-action-test/base-devel:latest
-          docker run --rm docker.pkg.github.com/project0/container-action-test/base-devel:latest yum -q --security check-update
+          docker pull docker.pkg.github.com/project0/container-hub/base-devel:latest
+          docker run --rm docker.pkg.github.com/project0/container-hub/base-devel:latest yum -q --security check-update
           echo "::set-output name=update_result::$?"
 
       - name: Trigger update

@@ -7,7 +7,6 @@ on:
       - master
     paths:
       - "base/**"
-      - "build-trigger"
       - ".github/workflows/base.yaml"
 
 jobs:
