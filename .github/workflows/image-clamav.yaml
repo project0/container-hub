@@ -1,5 +1,7 @@
 name: Build service image - Clamav
 on:
+  repository_dispatch:
+    types: [update-image-base]
   push:
     branches:
       - master
