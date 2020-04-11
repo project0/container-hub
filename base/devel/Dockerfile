@@ -1,6 +1,5 @@
 # Buld image with all development tools installed
-# project0de/base-devel:amzn2
-FROM docker.pkg.github.com/project0/container-hub/base:20200411-1
+FROM docker.pkg.github.com/project0/container-hub/base:latest
 COPY gitconfig /root/.gitconfig
 
 RUN yum -y groupinstall 'Development Tools' \
