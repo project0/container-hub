@@ -1,4 +1,4 @@
-name: Build Base image
+name: Build Base images
 on:
   repository_dispatch:
     types: [package-updates]
