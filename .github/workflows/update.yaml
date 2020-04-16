@@ -22,8 +22,9 @@ jobs:
         id: check_update
         run: |
           docker pull docker.pkg.github.com/project0/container-hub/base-devel:latest
-          docker run --rm docker.pkg.github.com/project0/container-hub/base-devel:latest yum -q --security check-update
-          echo "::set-output name=update_result::$?"
+          if ! docker run --rm docker.pkg.github.com/project0/container-hub/base-devel:latest yum -q --security check-update; then
+            echo "::set-output name=update_result::$?"
+          fi
 
       - name: Trigger update
         # exit code will be 100 if updates are available
