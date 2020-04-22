@@ -28,7 +28,7 @@ jobs:
 
       - name: Trigger update
         # exit code will be 100 if updates are available
-        if: ${{ (steps.check_update.outputs.update_result == "100") }}
+        if: steps.check_update.outputs.update_result == "100"
         uses: peter-evans/repository-dispatch@v1
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
