@@ -23,7 +23,9 @@ jobs:
         run: |
           docker pull docker.pkg.github.com/project0/container-hub/base-devel:latest
           if ! docker run --rm docker.pkg.github.com/project0/container-hub/base-devel:latest yum -q --security --secseverity=important,critical check-update; then
-            echo "::set-output name=update_result::$?"
+            result="$?"
+            echo "result: $result"
+            echo "::set-output name=update_result::$result"
           fi
 
       - name: Trigger update
