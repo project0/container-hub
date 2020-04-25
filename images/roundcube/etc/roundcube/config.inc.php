@@ -1,6 +1,6 @@
 <?php
 $config['des_key'] = '{{ random.AlphaNum 24 }}';
-$config['db_dsnw'] = 'sqlite:////{{ Env.ROUNDCUBEMAIL_DB_DIR }}/sqlite.db?mode=0646';
+$config['db_dsnw'] = 'sqlite:////{{ .Env.ROUNDCUBEMAIL_DB_DIR }}/sqlite.db?mode=0646';
 $config['log_driver'] = 'stdout';
 
 $config['default_host'] = 'localhost';
