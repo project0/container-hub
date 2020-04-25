@@ -31,7 +31,8 @@ COPY etc/ /_etc
 RUN chmod a+x /entrypoint.sh
 
 ENV ROUNDCUBEMAIL_DB_DIR=/data/db
-ENV ROUNDCUB_TEMP_DIR=/data/tmp
+ENV ROUNDCUBE_TEMP_DIR=/data/tmp
+ENV ROUNDCUBE_ENIGMA_PGP_HOMEDIR=
 
 # expose these volumes
 VOLUME [ "/data/db", "/data/tmp" ]
