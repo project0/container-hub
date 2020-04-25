@@ -20,14 +20,7 @@ jobs:
 
       - name: Check for security updates
         id: check_update
-        run: |
-          docker pull docker.pkg.github.com/project0/container-hub/base-devel:latest
-          set +e
-          docker run --rm docker.pkg.github.com/project0/container-hub/base-devel:latest yum -q --security --secseverity=important,critical check-update
-          result = $?
-          set -e
-          echo "result: $result"
-          echo "::set-output name=update_result::$result"
+        run: bash .github/workflows/scripts/check-update.sh docker.pkg.github.com/project0/container-hub/base-devel:latest
 
       - name: Trigger update
         # exit code will be 100 if updates are available
