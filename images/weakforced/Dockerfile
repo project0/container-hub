@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20200514-7 AS builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20200516-8 AS builder
 
 ENV DESTDIR=/build \
     PREFIX=/usr \
@@ -97,7 +97,7 @@ RUN git get-release "${WEAKFORCED_REPO}" "${WEAKFORCED_VERSION}" /src/weakforced
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM docker.pkg.github.com/project0/container-hub/base:20200514-7
+FROM docker.pkg.github.com/project0/container-hub/base:20200516-8
 
 COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
