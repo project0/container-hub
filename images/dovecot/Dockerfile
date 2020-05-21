@@ -3,16 +3,22 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20200516-8 AS build
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.10
+ARG DOVECOT_VERSION=2.3.10.1
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
 ARG LIBSODIUM_VERSION=1.0.18
 ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
 
 ARG PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
-ARG PIGENHOLE_VERSION=0.5.9
+ARG PIGENHOLE_VERSION=0.5.10
 
-RUN yum -y install wget which  openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
+ARG XAPIAN_REPO=https://github.com/xapian/xapian.git
+ARG XAPIAN_VERSION=v1.4.15
+
+ARG FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
+ARG FTS_XAPIAN_VERSION=1.3.1
+
+RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
       lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel tcp_wrappers-devel
 
@@ -21,8 +27,8 @@ RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
     && ./autogen.sh \
     && ./configure --prefix=/usr --libdir=/usr/lib64 \
     && make -j$(nproc) \
-    && make install \
-    && DESTDIR=/build make install
+    && DESTDIR= make install \
+    && make install
 
 RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
     && cd /src/dovecot \
@@ -37,7 +43,7 @@ RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
       --with-sql --with-ldap --with-pgsql --with-mysql --with-sqlite \
       --with-shadow --with-pam --with-gssapi \
     && make -j$(nproc) \
-    && DESTDIR=/build make install
+    && make install
 
 RUN git get-release "${PIGENHOLE_REPO}" "${PIGENHOLE_VERSION}" /src/pigenhole \
     && cd /src/pigenhole \
@@ -45,7 +51,25 @@ RUN git get-release "${PIGENHOLE_REPO}" "${PIGENHOLE_VERSION}" /src/pigenhole \
     && ./configure --prefix=/usr --libdir=/usr/lib64 --with-unfinished-features --disable-static --without-docs \
       --with-managesieve --with-ldap=yes --with-dovecot=/src/dovecot/ \
     && make -j$(nproc) \
-    && DESTDIR=/build make install
+    && make install
+
+# FTS plugins
+RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
+    && cd /src/xapian \
+    && touch xapian-applications/omega/.nobootstrap  xapian-bindings/.nobootstrap xapian-data/.nobootstrap xapian-maintainer-tools/.nobootstrap \
+    && ./bootstrap --download-tools=never \
+    && ./configure --prefix=/usr --libdir=/usr/lib64  --disable-documentation \
+    && make -j$(nproc) \
+    && DESTDIR= make install \
+    && make install
+
+RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian \
+    && cd /src/fts-xapian \
+    && sed -i 's/icu-\(uc\|i18n\) >= 60/icu-\1 >= 50/g' configure.ac \
+    && autoreconf -vif \
+    && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/src/dovecot/ \
+    && make -j$(nproc) \
+    && make install
 
 # cleanup
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
