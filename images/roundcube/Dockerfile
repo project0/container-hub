@@ -1,6 +1,6 @@
 FROM docker.pkg.github.com/project0/container-hub/base:20200701-11
 
-ARG ROUNDCUBEMAIL_VERSION=1.4.4
+ARG ROUNDCUBEMAIL_VERSION=1.4.7
 
 ## install lamp
 RUN amazon-linux-extras install -y php7.4 \
