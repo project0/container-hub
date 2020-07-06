@@ -3,7 +3,7 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20200701-11 AS buil
 ENV DESTDIR="/build/"
 WORKDIR /src
 
-ARG EXIM_VERSION=exim-4.93.0.4
+ARG EXIM_VERSION=exim-4.94
 
 ARG EXIM_REPO=https://github.com/Exim/exim.git
 ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386
