@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20200701-11 AS builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20200723-12 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -13,7 +13,7 @@ RUN yum -y install pcre2-devel libcurl-devel openssl-devel \
     && make -j$(nproc) \
     && make install
 
-FROM docker.pkg.github.com/project0/container-hub/base:20200701-11
+FROM docker.pkg.github.com/project0/container-hub/base:20200723-12
 
 ENV CLAMAV_USER clamav
 
