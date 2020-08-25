@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20200723-12 AS builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20200825-13 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -75,7 +75,7 @@ RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM docker.pkg.github.com/project0/container-hub/base:20200723-12
+FROM docker.pkg.github.com/project0/container-hub/base:20200825-13
 
 ENV DOVECOT_DHPARAM_BIT=4096
 
