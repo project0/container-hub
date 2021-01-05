@@ -6,9 +6,10 @@ WORKDIR /src
 ARG CLAMAV_VERSION=0.103.0
 ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 
-RUN yum -y install pcre2-devel libcurl-devel openssl-devel \
+RUN yum -y install pcre2-devel libcurl-devel openssl-devel libtool-ltdl-devel \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}*" clamav \
     && cd clamav \
+    && ./autogen.sh \
     && ./configure --enable-shared=yes --enable-static=no --prefix=/usr --sysconfdir=/etc/clamav \
     && make -j$(nproc) \
     && make install
@@ -18,7 +19,7 @@ FROM docker.pkg.github.com/project0/container-hub/base:20201210-17
 ENV CLAMAV_USER clamav
 
 # install libary deps and user
-RUN yum -y install openssl-libs pcre2 libcurl \
+RUN yum -y install openssl-libs pcre2 libcurl libtool-ltdl \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
@@ -33,7 +34,9 @@ COPY entrypoint.sh /entrypoint.sh
 COPY etc/ /etc
 
 RUN chmod a+x /entrypoint.sh \
-    && clamav-config --version
+    && clamav-config --version \
+    && clamd --version \
+    && freshclam --version
 
 VOLUME [ "/var/lib/clamav" ]
 
