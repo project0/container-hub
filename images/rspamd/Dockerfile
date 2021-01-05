@@ -3,7 +3,7 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20201210-17 AS buil
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG RSPAMD_VERSION=2.5
+ARG RSPAMD_VERSION=2.6
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 ARG LUJAIT_VERSION=2.0.5

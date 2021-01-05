@@ -1,6 +1,6 @@
 FROM golang:1.14 as builder
 
-ARG VERSION="v0.9.6"
+ARG VERSION="v0.11.0"
 ARG REPO="https://github.com/restic/restic.git"
 
 WORKDIR /src
