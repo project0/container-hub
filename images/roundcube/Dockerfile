@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base:20201210-17
+FROM docker.pkg.github.com/project0/container-hub/base:20210127-18
 
 ARG ROUNDCUBEMAIL_VERSION=1.4.10
 
