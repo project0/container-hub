@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20210220-19 as builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20210320-20 as builder
 
 WORKDIR /src
 
@@ -14,7 +14,7 @@ RUN git get-release "${REPO}" "${VERSION}" /src/coredns \
     && go generate \
     && make coredns CGO_ENABLED=1
 
-FROM docker.pkg.github.com/project0/container-hub/base:20210220-19
+FROM docker.pkg.github.com/project0/container-hub/base:20210320-20
 COPY --from=builder /src/coredns/coredns /usr/local/bin/
 
 RUN yum -y install unbound-libs openssl openssl-libs \
