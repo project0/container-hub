@@ -2,7 +2,7 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20210327-21 as buil
 
 WORKDIR /src
 
-ARG VERSION=v1.8.0
+ARG VERSION=v1.8.3
 ARG REPO=https://github.com/coredns/coredns.git
 
 RUN yum -y install unbound-devel \

@@ -3,7 +3,7 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20210327-21 AS buil
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.13
+ARG DOVECOT_VERSION=2.3.14
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
 ARG LIBSODIUM_VERSION=1.0.18
