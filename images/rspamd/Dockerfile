@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20210716-24 AS builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20210722-25 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -54,7 +54,7 @@ RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM docker.pkg.github.com/project0/container-hub/base:20210716-24
+FROM docker.pkg.github.com/project0/container-hub/base:20210722-25
 
 ENV RSPAMD_USER rspamd
 
