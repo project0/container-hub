@@ -5,13 +5,17 @@ WORKDIR /src
 ARG VERSION=v1.8.6
 ARG REPO=https://github.com/coredns/coredns.git
 
+# && amazon-linux-extras install -y golang1.11
+ADD https://dl.google.com/go/go1.17.3.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN yum -y install unbound-devel \
-    && amazon-linux-extras install -y golang1.11
+    && tar -C /usr/local -xzf /tmp/go.tar.gz \
+    && ln -s /usr/local/go/bin/go  /usr/local/bin/go \
+    && ln -s /usr/local/go/bin/gofmt  /usr/local/bin/gofmt
 
 RUN git get-release "${REPO}" "${VERSION}" /src/coredns \
     && cd /src/coredns \
     && echo 'unbound:github.com/coredns/unbound' >> plugin.cfg \
-    && go generate \
+    && make gen \
     && make coredns CGO_ENABLED=1
 
 FROM docker.pkg.github.com/project0/container-hub/base:20211105-28
