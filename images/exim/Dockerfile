@@ -3,10 +3,10 @@ FROM docker.pkg.github.com/project0/container-hub/base-devel:20211105-28 AS buil
 ENV DESTDIR="/build/"
 WORKDIR /src
 
-ARG EXIM_VERSION=exim-4.94
+ARG EXIM_VERSION=exim-4.95
 
 ARG EXIM_REPO=https://github.com/Exim/exim.git
-ARG LIBSPF_VERSION=ec7545ee044ac3f4f6958255778fa43046287386
+ARG LIBSPF_VERSION=4915c308d57ff3abac9fb241f09c4bed2ab54815
 # use git version, it includes some fixes for build
 ADD https://codeload.github.com/shevek/libspf2/tar.gz/${LIBSPF_VERSION} /src/libspf2.tar.gz
 
@@ -14,6 +14,8 @@ ADD https://codeload.github.com/shevek/libspf2/tar.gz/${LIBSPF_VERSION} /src/lib
 RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel
 
 # libspf2
+# workaround "wrong" automake version
+RUN ln -s /usr/share/automake-1.13/ /usr/share/automake-1.15
 RUN tar xvf libspf2.tar.gz \
     && cd libspf2-${LIBSPF_VERSION} \
     && ./configure --prefix=/usr --libdir=/usr/lib64 \
