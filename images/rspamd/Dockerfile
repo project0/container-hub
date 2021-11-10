@@ -1,9 +1,9 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20211110-29 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20211110-29 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG RSPAMD_VERSION=2.7
+ARG RSPAMD_VERSION=3.1
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 ARG LUJAIT_VERSION=2.0.5
@@ -16,7 +16,11 @@ ARG LIBSODIUM_VERSION=1.0.18
 ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel \
-       file-static file-devel sqlite-devel libicu-devel openssl-devel
+       file-static file-devel sqlite-devel libicu-devel openssl-devel \
+       gcc10 gcc10-c++
+
+# gcc10 is required for rspamd
+ENV CC=gcc10-cc CXX=gcc10-g++
 
 RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
     && cd /src/libsodium \
@@ -39,6 +43,7 @@ RUN tar xvf luajit.tar.gz \
     && make -j$(nproc) \
     && DESTDIR=/ make install PREFIX=/usr MULTILIB=lib64 \
     && make install PREFIX=/usr MULTILIB=lib64
+
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p build \
