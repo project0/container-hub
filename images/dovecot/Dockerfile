@@ -1,22 +1,22 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20211105-28 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20211105-28 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.14
+ARG DOVECOT_VERSION=2.3.17
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
 ARG LIBSODIUM_VERSION=1.0.18
 ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
 
 ARG PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
-ARG PIGENHOLE_VERSION=0.5.13
+ARG PIGENHOLE_VERSION=0.5.17
 
 ARG XAPIAN_REPO=https://github.com/xapian/xapian.git
-ARG XAPIAN_VERSION=v1.4.17
+ARG XAPIAN_VERSION=v1.4.18
 
 ARG FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
-ARG FTS_XAPIAN_VERSION=1.4.4
+ARG FTS_XAPIAN_VERSION=1.4.14
 
 RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
@@ -65,7 +65,6 @@ RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
 
 RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian \
     && cd /src/fts-xapian \
-    && sed -i 's/icu-\(uc\|i18n\) >= 60/icu-\1 >= 50/g' configure.ac \
     && autoreconf -vif \
     && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/src/dovecot/ \
     && make -j$(nproc) \
