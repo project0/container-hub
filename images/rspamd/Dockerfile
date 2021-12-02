@@ -59,7 +59,7 @@ RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM docker.pkg.github.com/project0/container-hub/base:20211110-29
+FROM docker.pkg.github.com/project0/container-hub/base:20211202-30
 
 ENV RSPAMD_USER rspamd
 
