@@ -1,4 +1,4 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20211202-30 AS builder
+FROM docker.pkg.github.com/project0/container-hub/base-devel:20220712-31 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -26,7 +26,7 @@ RUN yum -y install cmake3 pcre2-devel libcurl-devel openssl-devel libtool-ltdl-d
     && cmake3 --build build \
     && cmake3 --install build
 
-FROM docker.pkg.github.com/project0/container-hub/base:20211202-30
+FROM docker.pkg.github.com/project0/container-hub/base:20220712-31
 
 ENV CLAMAV_USER clamav
 
