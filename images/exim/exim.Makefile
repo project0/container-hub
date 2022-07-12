@@ -29,7 +29,7 @@ LOOKUP_MYSQL=yes
 LOOKUP_INCLUDE=-I /usr/include/mysql
 LOOKUP_LIBS=-L /usr/lib64/mysql -lmysqlclient
 
-PCRE_CONFIG=yes
+PCRE2_CONFIG=yes
 SUPPORT_DANE=yes
 
 

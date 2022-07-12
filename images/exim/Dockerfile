@@ -11,7 +11,7 @@ ARG LIBSPF_VERSION=4915c308d57ff3abac9fb241f09c4bed2ab54815
 ADD https://codeload.github.com/shevek/libspf2/tar.gz/${LIBSPF_VERSION} /src/libspf2.tar.gz
 
 # deps
-RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel
+RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel pcre2-devel
 
 # libspf2
 # workaround "wrong" automake version
@@ -35,7 +35,7 @@ RUN cd /src/exim/src \
 FROM docker.pkg.github.com/project0/container-hub/base:20211202-30
 
 ## install libary deps
-RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb \
+RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb pcre2\
     && yum clean all \
     && rm -rf /var/cache/yum \
     && mkdir -p /_etc
