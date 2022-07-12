@@ -7,6 +7,7 @@ ARG CLAMAV_VERSION=0.105.0
 ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 
 RUN yum -y install pcre2-devel libcurl-devel openssl-devel libtool-ltdl-devel \
+    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}*" clamav \
     && cd clamav \
     && ./autogen.sh \
