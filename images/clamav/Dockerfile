@@ -10,10 +10,20 @@ RUN yum -y install pcre2-devel libcurl-devel openssl-devel libtool-ltdl-devel \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}*" clamav \
     && cd clamav \
-    && ./autogen.sh \
-    && ./configure --enable-shared=yes --enable-static=no --prefix=/usr --sysconfdir=/etc/clamav \
-    && make -j$(nproc) \
-    && make install
+    && cmake3 -B build \
+          -DCMAKE_BUILD_TYPE="Release" \
+          -DCMAKE_INSTALL_PREFIX="/usr" \
+          -DCMAKE_INSTALL_LIBDIR="/usr/lib" \
+          -DAPP_CONFIG_DIRECTORY="/etc/clamav" \
+          -DDATABASE_DIRECTORY="/var/lib/clamav" \
+          -DENABLE_CLAMONACC=OFF \
+          -DENABLE_EXAMPLES=OFF \
+          -DENABLE_JSON_SHARED=ON \
+          -DENABLE_MAN_PAGES=OFF \
+          -DENABLE_MILTER=ON \
+          -DENABLE_STATIC_LIB=OFF \
+    && cmake3 --build build \
+    && cmake3 --install build
 
 FROM docker.pkg.github.com/project0/container-hub/base:20211202-30
 
