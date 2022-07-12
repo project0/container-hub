@@ -2,8 +2,9 @@
 FROM docker.pkg.github.com/project0/container-hub/base:latest
 COPY gitconfig /root/.gitconfig
 
-RUN yum -y groupinstall 'Development Tools' \
-    && yum -y install cmake \
+RUN dnf config-manager --set-enabled crb \
+    && yum -y groupinstall 'Development Tools' \
+    && yum -y install cmake libtool-ltdl check-devel bzip2-devel libcurl-devel openssl-devel \
     && echo "alias cmake3=cmake" > /etc/profile.d/cmake.csh \
     && yum clean all \
     && rm -rf /var/cache/yum
