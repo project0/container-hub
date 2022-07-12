@@ -9,8 +9,9 @@ ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 RUN yum -y install cmake3 pcre2-devel libcurl-devel openssl-devel libtool-ltdl-devel \
     && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}*" clamav \
-    && cd clamav \
-    && cmake3 -B build \
+    && mkdir -p build \
+    && cd build \
+    && cmake3 ../clamav -B build \
           -DCMAKE_BUILD_TYPE="Release" \
           -DCMAKE_INSTALL_PREFIX="/usr" \
           -DCMAKE_INSTALL_LIBDIR="/usr/lib" \
