@@ -12,17 +12,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-        
+
       - name: Docker Login
         uses: azure/docker-login@v1
         with:
-          login-server: docker.pkg.github.com
+          login-server: ghcr.io
           username: $GITHUB_ACTOR
-          password: ${{ secrets.GITHUB_TOKEN }}      
-        
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Check for security updates
         id: check_update
-        run: bash .github/workflows/scripts/check-update.sh docker.pkg.github.com/project0/container-hub/base-devel:latest
+        run: bash .github/workflows/scripts/check-update.sh ghcr.io/project0/container-hub/base-devel:latest
 
       - name: Trigger update
         # exit code will be 100 if updates are available
