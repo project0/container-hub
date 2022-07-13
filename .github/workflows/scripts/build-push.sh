@@ -6,7 +6,7 @@ DOCKER_FILE="$2"
 DOCKER_PATH=$(dirname "$DOCKER_FILE")
 
 RELEASE_VERSION="$(date +%Y%m%d)-${GITHUB_RUN_NUMBER}"
-DOCKER_REPO="$(echo "docker.pkg.github.com/${GITHUB_REPOSITORY}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
+DOCKER_REPO="$(echo "ghcr.io/${GITHUB_REPOSITORY}/${IMAGE_NAME}" | tr '[:upper:]' '[:lower:]')"
 DOCKER_TAG_RELEASE="${DOCKER_REPO}:${RELEASE_VERSION}"
 DOCKER_TAG_LATEST="${DOCKER_REPO}:latest"
 echo "build ${DOCKER_TAG_RELEASE}"
