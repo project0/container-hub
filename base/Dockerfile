@@ -7,12 +7,13 @@ ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.10.0/gomplat
 # Add tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /extra/bin/tini
 
+ENV PATH="${PATH}:/extra/bin/"
+
 # update image
 RUN yum -y update \
     && yum -y reinstall glibc-common \
-    && yum -y install wget which  \
-    && yum clean all \
-    && rm -rf /var/cache/yum \
-    && chmod a+rx /extra/bin/*
+    && yum -y install wget which \
+    && echo 'yum clean all && rm -rf /var/cache/yum' > /extra/bin/cleanup \
+    && chmod a+rx /extra/bin/* \
+    && cleanup
 
-ENV PATH="${PATH}:/extra/bin/"

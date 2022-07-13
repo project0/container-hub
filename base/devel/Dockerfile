@@ -1,10 +1,10 @@
 # Buld image with all development tools installed
-FROM docker.pkg.github.com/project0/container-hub/base:latest
+FROM ghcr.io/project0/container-hub/base:latest
 COPY gitconfig /root/.gitconfig
 
-RUN dnf config-manager --set-enabled crb \
-    && yum -y groupinstall 'Development Tools' \
-    && yum -y install cmake libtool-ltdl check-devel bzip2-devel libcurl-devel openssl-devel \
+RUN yum -y install dnf-plugins-core \
+    && dnf config-manager --set-enabled crb \
+    && yum -y install autoconf automake binutils bison flex gcc gcc-c++ glibc-devel libtool make pkgconf pkgconf-m4 pkgconf-pkg-config git patchutils cmake libtool-ltdl \
+       check-devel bzip2-devel libcurl-devel openssl-devel \
     && echo "alias cmake3=cmake" > /etc/profile.d/cmake.csh \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+    && cleanup

@@ -1,17 +1,16 @@
-FROM docker.pkg.github.com/project0/container-hub/base-devel:20220712-31 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20220712-31 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG CLAMAV_VERSION=0.105.0
+ARG CLAMAV_VERSION=0.105
 ARG CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
-
-RUN yum -y install cmake3 pcre2-devel libcurl-devel openssl-devel libtool-ltdl-devel \
-    && curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
+RUN curl --proto '=https' --tlsv1.3 -sSf https://sh.rustup.rs | sh -s -- -y 
+RUN yum -y install pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail-milter-devel \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}*" clamav \
     && mkdir -p build \
     && cd build \
-    && cmake3 ../clamav -B build \
+    && cmake ../clamav -B build \
           -DCMAKE_BUILD_TYPE="Release" \
           -DCMAKE_INSTALL_PREFIX="/usr" \
           -DCMAKE_INSTALL_LIBDIR="/usr/lib" \
@@ -23,15 +22,15 @@ RUN yum -y install cmake3 pcre2-devel libcurl-devel openssl-devel libtool-ltdl-d
           -DENABLE_MAN_PAGES=OFF \
           -DENABLE_MILTER=ON \
           -DENABLE_STATIC_LIB=OFF \
-    && cmake3 --build build \
-    && cmake3 --install build
+    && cmake --build build \
+    && cmake --install build
 
-FROM docker.pkg.github.com/project0/container-hub/base:20220712-31
+FROM ghcr.io/project0/container-hub/base:20220712-31
 
 ENV CLAMAV_USER clamav
 
 # install libary deps and user
-RUN yum -y install openssl-libs pcre2 libcurl libtool-ltdl \
+RUN yum -y install openssl-libs pcre2 bzip2-libs libxml2 \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
