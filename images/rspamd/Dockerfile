@@ -16,11 +16,7 @@ ARG LIBSODIUM_VERSION=1.0.18
 ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel \
-       file-static file-devel sqlite-devel libicu-devel openssl-devel \
-       gcc10 gcc10-c++
-
-# gcc10 is required for rspamd
-ENV CC=gcc10-cc CXX=gcc10-g++
+       file-devel sqlite-devel libicu-devel openssl-devel
 
 RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
     && cd /src/libsodium \

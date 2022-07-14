@@ -1,4 +1,4 @@
-FROM golang:1.14 as builder
+FROM golang:1.18 as builder
 
 ARG VERSION="v0.12.1"
 ARG REPO="https://github.com/restic/restic.git"
@@ -11,7 +11,7 @@ RUN git clone --depth=1 "${REPO}" --branch=$(git ls-remote --tags --refs -q "${R
 FROM ghcr.io/project0/container-hub/base:20220713-33
 
 # install additional tools
-RUN yum -y install mariadb postgresql curl wget \
+RUN yum -y install mariadb postgresql \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum
