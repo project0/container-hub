@@ -38,7 +38,7 @@ RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
       --enable-maintainer-mode --disable-static --without-docs \
       --with-ssl=openssl --with-shared-libs \
       --with-zlib --with-bzlib --with-lzma --with-lz4 \
-      --with-libcap --with-libwrap --with-lua \
+      --with-libcap --with-lua \
       --with-lucene --with-solr --with-textcat --with-icu \
       --with-sql --with-ldap --with-pgsql --with-mysql --with-sqlite \
       --with-shadow --with-pam --with-gssapi \
