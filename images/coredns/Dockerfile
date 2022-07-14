@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20220713-34 as builder
+FROM ghcr.io/project0/container-hub/base-devel:20220714-35 as builder
 
 WORKDIR /src
 
@@ -19,7 +19,7 @@ RUN git get-release "${REPO}" "${VERSION}" /src/coredns \
     && make gen \
     && make coredns CGO_ENABLED=1
 
-FROM ghcr.io/project0/container-hub/base:20220713-34
+FROM ghcr.io/project0/container-hub/base:20220714-35
 COPY --from=builder /src/coredns/coredns /usr/local/bin/
 
 RUN yum -y install unbound-libs openssl openssl-libs \

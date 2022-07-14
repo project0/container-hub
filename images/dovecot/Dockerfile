@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20220713-34 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20220714-35 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -74,7 +74,7 @@ RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20220713-33
+FROM ghcr.io/project0/container-hub/base:20220714-35
 
 ENV DOVECOT_DHPARAM_BIT=4096
 

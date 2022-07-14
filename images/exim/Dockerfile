@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20220713-33 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20220714-35 AS builder
 
 ENV DESTDIR="/build/"
 WORKDIR /src
@@ -32,7 +32,7 @@ RUN cd /src/exim/src \
     && touch "${DESTDIR}/etc/exim/exim.conf"
 
 # Build target docker image
-FROM ghcr.io/project0/container-hub/base:20220713-33
+FROM ghcr.io/project0/container-hub/base:20220714-35
 
 ## install libary deps
 RUN yum -y install openssl-libs mariadb-libs libidn2 libdb pcre2\
