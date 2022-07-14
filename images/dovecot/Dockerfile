@@ -20,7 +20,7 @@ ARG FTS_XAPIAN_VERSION=1.5.5
 
 RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
-      lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel tcp_wrappers-devel
+      lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel gettext-devel
 
 RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
     && cd /src/libsodium \
@@ -82,7 +82,7 @@ COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
 
 RUN yum install -y openssl openssl-libs mariadb-libs postgresql-libs sqlite openldap \
-      krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap tcp_wrappers-libs clucene-core expat \
+      krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap  clucene-core expat \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \

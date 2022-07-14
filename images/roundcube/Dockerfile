@@ -3,11 +3,11 @@ FROM ghcr.io/project0/container-hub/base:20220714-35
 ARG ROUNDCUBEMAIL_VERSION=1.4.13
 
 ## install lamp
-RUN amazon-linux-extras install -y php7.4 \
-    && yum -y install \
-      php-pdo php-fpm php-mysqlnd php-json php-gd php-xml php-intl php-mbstring php-ldap \
+RUN yum -y install \
+      php php-pdo php-fpm php-mysqlnd php-json php-gd php-xml php-intl php-mbstring php-ldap \
       httpd \
       tar \
+    && mkdir -p /run/php-fpm \
     && yum clean all \
     && rm -rf /var/cache/yum
 
