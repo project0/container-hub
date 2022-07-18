@@ -18,7 +18,7 @@ ARG XAPIAN_VERSION=v1.4.19
 ARG FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 ARG FTS_XAPIAN_VERSION=1.5.5
 
-RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
+RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
       lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel gettext-devel
 
@@ -43,7 +43,7 @@ RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
       --with-sql --with-ldap --with-pgsql --with-mysql --with-sqlite \
       --with-shadow --with-pam --with-gssapi \
     && make -j$(nproc) \
-    && make install
+    && make install && DESTDIR="" make install
 
 RUN git get-release "${PIGENHOLE_REPO}" "${PIGENHOLE_VERSION}" /src/pigenhole \
     && cd /src/pigenhole \
@@ -66,12 +66,13 @@ RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
 RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian \
     && cd /src/fts-xapian \
     && autoreconf -vif \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/src/dovecot/ \
+    && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/src/dovecot \
     && make -j$(nproc) \
     && make install
 
 # cleanup
-RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
+RUN cp -aRv /usr/lib64/mysql "${DESTDIR}/usr/lib64/" \
+    && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
 FROM ghcr.io/project0/container-hub/base:20220718-36
@@ -81,8 +82,8 @@ ENV DOVECOT_DHPARAM_BIT=4096
 COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
 
-RUN yum install -y openssl openssl-libs mariadb-libs postgresql-libs sqlite openldap \
-      krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap  clucene-core expat \
+RUN yum install -y openssl openssl-libs postgresql-libs sqlite openldap \
+      krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap clucene-core expat \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \

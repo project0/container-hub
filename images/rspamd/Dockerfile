@@ -60,7 +60,7 @@ FROM ghcr.io/project0/container-hub/base:20220718-36
 ENV RSPAMD_USER rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 libcurl \
+RUN yum -y install openssl-libs libevent libicu pcre2 \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \

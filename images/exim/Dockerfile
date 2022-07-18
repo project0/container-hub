@@ -7,20 +7,23 @@ ARG EXIM_VERSION=exim-4.96 \
     EXIM_REPO=https://github.com/Exim/exim.git
 
 # deps
-RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel
+RUN yum install -y openssl-devel mysql-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel
 
 # exim
-RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim \
-    && cd /src/exim/src \
+RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim
+COPY exim.Makefile /src/exim/src/Local/Makefile
+RUN cd /src/exim/src \
     && make -j$(nproc) \
     && useradd exim \
-    && make install
+    && make install \
+    && install -dm0755 "${DESTDIR}/usr/lib/exim/lookups" "${DESTDIR}/var/log/exim" "${DESTDIR}/var/spool/exim" \
+    && cp -aRv /usr/lib64/mysql "${DESTDIR}/usr/lib64/"
 
 # Build target docker image
 FROM ghcr.io/project0/container-hub/base:20220718-36
 
 ## install libary deps
-RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb pcre2 libspf2 \
+RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 \
     && cleanup \
     && mkdir -p /_etc
 
