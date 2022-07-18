@@ -1,43 +1,27 @@
 FROM ghcr.io/project0/container-hub/base-devel:20220714-35 AS builder
 
-ENV DESTDIR="/build/"
+ENV DESTDIR="/build"
 WORKDIR /src
 
-ARG EXIM_VERSION=exim-4.96
-
-ARG EXIM_REPO=https://github.com/Exim/exim.git
-ARG LIBSPF_VERSION=4915c308d57ff3abac9fb241f09c4bed2ab54815
-# use git version, it includes some fixes for build
-ADD https://codeload.github.com/shevek/libspf2/tar.gz/${LIBSPF_VERSION} /src/libspf2.tar.gz
+ARG EXIM_VERSION=exim-4.96 \
+    EXIM_REPO=https://github.com/Exim/exim.git
 
 # deps
-RUN yum install -y openssl-devel mariadb-devel libidn2-devel libdb-devel pcre2-devel
-
-# libspf2
-# workaround "wrong" automake version
-RUN ln -s /usr/share/automake-1.13/ /usr/share/automake-1.15
-RUN tar xvf libspf2.tar.gz \
-    && cd libspf2-${LIBSPF_VERSION} \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 \
-    && make -j$(nproc) \
-    && make install
+RUN yum install -y openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel
 
 # exim
-RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}*" /src/exim
-COPY exim.Makefile /src/exim/src/Local/Makefile
-RUN cd /src/exim/src \
+RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim \
+    && cd /src/exim/src \
     && make -j$(nproc) \
-    && install -dm0755 "${DESTDIR}/etc/exim" "${DESTDIR}/usr/bin" "${DESTDIR}/usr/lib/exim/lookups" "${DESTDIR}/var/log/exim"  "${DESTDIR}/var/spool/exim" \
-    && for file in $(find /src/exim/src/build* -type f -executable -iname 'e*'); do install -m0755 "$file" "${DESTDIR}/usr/bin/"; done \
-    && touch "${DESTDIR}/etc/exim/exim.conf"
+    && useradd exim \
+    && make install
 
 # Build target docker image
 FROM ghcr.io/project0/container-hub/base:20220714-35
 
 ## install libary deps
-RUN yum -y install openssl-libs mariadb-libs libidn2 libdb pcre2\
-    && yum clean all \
-    && rm -rf /var/cache/yum \
+RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb pcre2 libspf2 \
+    && cleanup \
     && mkdir -p /_etc
 
 # copy config templates and entrypoint

@@ -12,8 +12,7 @@ ENV PATH="${PATH}:/extra/bin/"
 # update image
 RUN yum -y update \
     && yum -y reinstall glibc-common \
-    && yum -y install wget which \
+    && yum -y install wget which epel-release \
     && echo 'yum clean all && rm -rf /var/cache/yum' > /extra/bin/cleanup \
     && chmod a+rx /extra/bin/* \
     && cleanup
-
