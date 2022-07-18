@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20220714-35 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20220718-36 AS builder
 
 ENV DESTDIR="/build"
 WORKDIR /src
@@ -17,7 +17,7 @@ RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim \
     && make install
 
 # Build target docker image
-FROM ghcr.io/project0/container-hub/base:20220714-35
+FROM ghcr.io/project0/container-hub/base:20220718-36
 
 ## install libary deps
 RUN yum -y install openssl-libs mariadb-libs libidn libidn2 libdb pcre2 libspf2 \
