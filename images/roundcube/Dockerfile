@@ -1,6 +1,6 @@
 FROM ghcr.io/project0/container-hub/base:20220718-36
 
-ARG ROUNDCUBEMAIL_VERSION=1.4.13
+ARG ROUNDCUBEMAIL_VERSION=1.5.3
 
 ## install lamp
 RUN yum -y install \
