@@ -6,9 +6,6 @@ WORKDIR /src
 ARG DOVECOT_VERSION=2.3.19
 ARG DOVECOT_REPO=https://github.com/dovecot/core.git
 
-ARG LIBSODIUM_VERSION=1.0.18
-ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
-
 ARG PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 ARG PIGENHOLE_VERSION=0.5.19
 
@@ -19,16 +16,8 @@ ARG FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 ARG FTS_XAPIAN_VERSION=1.5.5
 
 RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
-      sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel \
+      sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel libsodium-devel \
       lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel gettext-devel
-
-RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
-    && cd /src/libsodium \
-    && ./autogen.sh \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 \
-    && make -j$(nproc) \
-    && DESTDIR= make install \
-    && make install
 
 RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
     && cd /src/dovecot \
@@ -71,7 +60,7 @@ RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian
     && make install
 
 # cleanup
-RUN cp -aRv /usr/lib64/mysql "${DESTDIR}/usr/lib64/" \
+RUN cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/" \
     && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
@@ -82,7 +71,7 @@ ENV DOVECOT_DHPARAM_BIT=4096
 COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
 
-RUN yum install -y openssl openssl-libs postgresql-libs sqlite openldap \
+RUN yum install -y openssl openssl-libs postgresql-libs sqlite openldap libsodium \
       krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap clucene-core expat \
     && yum -y update \
     && yum clean all \
@@ -95,7 +84,8 @@ RUN yum install -y openssl openssl-libs postgresql-libs sqlite openldap \
     && chmod a+x /entrypoint.sh \
     && mkdir -p /_etc /etc/dovecot \
     && touch /etc/dovecot/dovecot.conf \
-    && dovecot --version
+    && dovecot --version \
+    && set -x && test -z "$(ldd /usr/lib64/dovecot/*.so | grep "not found")"
 
 VOLUME [ "/mail", "/dhparam", "/var/lib/dovecot"]
 # tini is required to handle clean shutdown of dovecot
