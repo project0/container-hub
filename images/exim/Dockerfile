@@ -17,7 +17,7 @@ RUN cd /src/exim/src \
     && useradd exim \
     && make install \
     && install -dm0755 "${DESTDIR}/usr/lib/exim/lookups" "${DESTDIR}/var/log/exim" "${DESTDIR}/var/spool/exim" "${DESTDIR}/usr/lib64" \
-    && -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/"
+    && cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/"
 
 # Build target docker image
 FROM ghcr.io/project0/container-hub/base:20220718-36
