@@ -68,6 +68,8 @@ LDFLAGS += -lidn -lidn2
 SUPPORT_SPF=yes
 LDFLAGS += -L/build/usr/lib64 -lspf2
 
+EXPERIMENTAL_ARC=ye
+
 SYSTEM_ALIASES_FILE=/etc/aliases
 HAVE_IPV6=yes
 EXIM_TMPDIR="/tmp"
