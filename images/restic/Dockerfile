@@ -1,6 +1,6 @@
-FROM golang:1.18 as builder
+FROM golang:1.19 as builder
 
-ARG VERSION="v0.12.1"
+ARG VERSION="v0.14.0"
 ARG REPO="https://github.com/restic/restic.git"
 
 WORKDIR /src
@@ -12,14 +12,14 @@ FROM ghcr.io/project0/container-hub/base:20220903-38
 
 # install additional tools
 RUN yum -y install mariadb postgresql \
-    && yum -y update \
-    && yum clean all \
-    && rm -rf /var/cache/yum
+    && cleanup
 
 COPY --from=builder /src/restic /usr/local/bin/
 COPY entrypoint.sh /entrypoint.sh
 
-RUN chmod a+x /entrypoint.sh
+RUN chmod a+x /entrypoint.sh \
+    && restic version
+
 VOLUME /data
 WORKDIR /data
 
