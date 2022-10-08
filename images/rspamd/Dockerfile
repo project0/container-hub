@@ -3,7 +3,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20220903-38 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG RSPAMD_VERSION=3.2
+ARG RSPAMD_VERSION=3.3
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 ARG LUJAIT_VERSION=2.0.5
