@@ -11,14 +11,7 @@ jobs:
     # This job runs on Linux
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Docker Login
-        uses: azure/docker-login@v1
-        with:
-          login-server: ghcr.io
-          username: $GITHUB_ACTOR
-          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v3
 
       - name: Check for security updates
         id: check_update
@@ -27,7 +20,7 @@ jobs:
       - name: Trigger update
         # exit code will be 100 if updates are available
         if: steps.check_update.outputs.update_result == '100'
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           event-type: package-updates
