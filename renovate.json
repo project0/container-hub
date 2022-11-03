@@ -1,0 +1,29 @@
+{
+  "enabled": true,
+  "extends": ["config:base", ":rebaseStalePrs"],
+  "packageRules": [
+    {
+      "enabled": true,
+      "matchDatasources": ["docker"],
+      "matchUpdateTypes": ["minor"]
+    },
+    {
+      "enabled": true,
+      "matchDatasources": ["github-releases"],
+      "matchPackageNames": [
+        "rspamd/rspamd",
+        "roundcube/roundcubemail"
+      ]
+    }
+  ],
+  "regexManagers": [
+    {
+      "fileMatch": [
+        "(^|/|\\.)Dockerfile$"
+      ],
+      "matchStrings": ["RSPAMD_VERSION=(?<currentValue>.*?)\\n"],
+      "depNameTemplate": "rspamd/rspamd",
+      "datasourceTemplate": "github-releases"
+    }
+  ]
+}
