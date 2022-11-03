@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base:20221022-40
+FROM ghcr.io/project0/container-hub/base:20221103-41
 
 ARG ROUNDCUBEMAIL_VERSION=1.6.0
 
