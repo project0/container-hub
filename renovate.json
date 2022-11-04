@@ -13,7 +13,8 @@
       "matchPackageNames": [
         "rspamd/rspamd",
         "roundcube/roundcubemail"
-      ]
+      ],
+      "versioning" : "conan"
     }
   ],
   "regexManagers": [
