@@ -4,8 +4,6 @@ on:
     types: [package-updates]
 
   pull_request:
-    branches:
-      - master
     paths:
       - "base/**"
 

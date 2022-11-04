@@ -4,8 +4,6 @@ on:
     types: [update-image-base]
 
   pull_request:
-    branches:
-      - master
     paths:
       - "images/exim/**"
 
@@ -13,7 +11,7 @@ on:
     branches:
       - master
     paths:
-      - "images/dovecot/**"
+      - "images/exim/**"
       - ".github/workflows/image-exim.yaml"
       - ".github/workflows/shared-build.yaml"
 
