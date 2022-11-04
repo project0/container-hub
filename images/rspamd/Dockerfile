@@ -3,7 +3,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20221104-43 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-# renovate: datasource=github-release depName=rspamd/rspamd versioning=conan
+# renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
 ARG RSPAMD_VERSION=3.3
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
