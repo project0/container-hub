@@ -2,6 +2,11 @@ name: Build Base images
 on:
   repository_dispatch:
     types: [package-updates]
+
+  pull_request:
+    branches:
+      - master
+
   push:
     branches:
       - master
@@ -24,10 +29,49 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and publish the base docker image
-        run: bash .github/workflows/scripts/build-push.sh base base/Dockerfile
-      - name: Build and publish the developer docker image
-        run: bash .github/workflows/scripts/build-push.sh base-devel base/devel/Dockerfile
+      - name: set version
+        run: |
+          echo "IMAGE_VERSION=$(date +%Y%m%d)-${GITHUB_RUN_NUMBER}" >> ${GITHUB_ENV}
+        env:
+          ACTOR: ${{ github.actor }}
+          REPO: ${{ github.repository }}
+
+      - name: Docker meta (base)
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}/base
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ env.IMAGE_VERSION }}
+
+      - name: Build and push (base)
+        uses: docker/build-push-action@v3
+        with:
+          context: base
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+
+
+      - name: Docker meta (base-devel)
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: |
+            ghcr.io/${{ github.repository }}/base-devel
+          tags: |
+            type=raw,value=latest
+            type=raw,value=${{ env.IMAGE_VERSION }}
+
+      - name: Build and push (base-devel)
+        uses: docker/build-push-action@v3
+        with:
+          context: base/devel
+          push: ${{ github.event_name != 'pull_request' }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
 
 #      - name: Release images
 #        uses: stefanzweifel/git-auto-commit-action@v4.15.3
