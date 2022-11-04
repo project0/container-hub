@@ -20,7 +20,7 @@ RUN cd /src/exim/src \
     && cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/"
 
 # Build target docker image
-FROM ghcr.io/project0/container-hub/base:20221104-43
+FROM ghcr.io/project0/container-hub/base:20221104-44
 
 ## install libary deps
 RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 \

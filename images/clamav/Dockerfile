@@ -26,7 +26,7 @@ RUN yum -y install pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail
     && cmake --build build \
     && cmake --install build
 
-FROM ghcr.io/project0/container-hub/base:20221104-43
+FROM ghcr.io/project0/container-hub/base:20221104-44
 
 ENV CLAMAV_USER clamav
 
