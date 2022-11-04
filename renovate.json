@@ -6,7 +6,7 @@
       "enabled": true,
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"]
-    },
+    }
   ],
   "regexManagers": [
     {

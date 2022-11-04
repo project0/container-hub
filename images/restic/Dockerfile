@@ -1,6 +1,6 @@
 FROM golang:1.19 as builder
 
-# renovate: datasource=github=release depName=restic/restic
+# renovate: datasource=github-release depName=restic/restic
 ARG VERSION="v0.14.0"
 ARG REPO="https://github.com/restic/restic.git"
 
