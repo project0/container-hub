@@ -8,7 +8,7 @@ WORKDIR /src
 RUN git clone --depth=1 "${REPO}" --branch=$(git ls-remote --tags --refs -q "${REPO}" "${VERSION}*" | tail -n 1 | awk -F/ '{ print $3 }') /src \
     && go run build.go
 
-FROM ghcr.io/project0/container-hub/base:20221103-41
+FROM ghcr.io/project0/container-hub/base:20221104-42
 
 # install additional tools
 RUN yum -y install mariadb postgresql \
