@@ -2,28 +2,24 @@ name: Build service image - Restic
 on:
   repository_dispatch:
     types: [update-image-base]
+
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "images/restic/**"
+
   push:
     branches:
       - master
     paths:
       - "images/restic/**"
       - ".github/workflows/image-restic.yaml"
+      - ".github/workflows/shared-build.yaml"
 
 jobs:
   build:
-    name: Build and publish docker image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and publish docker image
-        if: github.event_name != 'pull_request'
-        run: bash .github/workflows/scripts/build-push.sh restic images/restic/Dockerfile
+    uses: ./.github/workflows/shared-build.yaml
+    with:
+      name: restic
+      path: images/restic

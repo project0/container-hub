@@ -2,28 +2,24 @@ name: Build service image - Roundcube
 on:
   repository_dispatch:
     types: [update-image-base]
+
+  pull_request:
+    branches:
+      - master
+    paths:
+      - "images/roundcube/**"
+
   push:
     branches:
       - master
     paths:
       - "images/roundcube/**"
       - ".github/workflows/image-roundcube.yaml"
+      - ".github/workflows/shared-build.yaml"
 
 jobs:
   build:
-    name: Build and publish docker image
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Login to GHCR
-        if: github.event_name != 'pull_request'
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and publish docker image
-        if: github.event_name != 'pull_request'
-        run: bash .github/workflows/scripts/build-push.sh roundcube images/roundcube/Dockerfile
+    uses: ./.github/workflows/shared-build.yaml
+    with:
+      name: roundcube
+      path: images/roundcube

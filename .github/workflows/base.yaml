@@ -6,6 +6,8 @@ on:
   pull_request:
     branches:
       - master
+    paths:
+      - "base/**"
 
   push:
     branches:
@@ -71,16 +73,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta-base-devel.outputs.tags }}
           labels: ${{ steps.meta-base-devel.outputs.labels }}
-
-#      - name: Release images
-#        uses: stefanzweifel/git-auto-commit-action@v4.15.3
-#        if: success()
-#        with:
-#          commit_message: Update base image version
-#
-#      - name: Trigger update
-#        if: success()
-#        uses: peter-evans/repository-dispatch@v2
-#        with:
-#          token: ${{ secrets.REPO_ACCESS_TOKEN }}
-#          event-type: update-image-base
