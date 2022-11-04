@@ -5,11 +5,17 @@
     {
       "enabled": true,
       "matchDatasources": ["docker"],
+      "matchPackagePrefixes": ["ghcr.io/project0/container-hub/"],
+      "versioning": "regex:^(?<major>\\d+)(-(?<minor>\\d+))?$"
+    },
+    {
+      "enabled": true,
+      "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"]
     },
     {
       "enabled": true,
-      "matchDatasources": ["github-release"],
+      "matchDatasources": ["github-releases"],
       "matchUpdateTypes": ["regex"]
     }
   ],
