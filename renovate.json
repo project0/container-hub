@@ -13,20 +13,10 @@
       "fileMatch": [
         "(^|/|\\.)Dockerfile$"
       ],
-      "matchStrings": ["RSPAMD_VERSION=(?<currentValue>.*?)\\n"],
-      "depNameTemplate": "rspamd/rspamd",
-      "datasourceTemplate": "github-releases"
-    },
-    {
-      "fileMatch": [
-        "(^|/|\\.)Dockerfile$"
-      ],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)( versioning=(?<versioning>[^\\s]+?))?\\s+.*VERSION=(?<currentValue>[^\\s]+)"
       ],
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-      "depNameTemplate": "rspamd/rspamd",
-      "datasourceTemplate": "github-releases"
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ]
 }
