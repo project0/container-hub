@@ -6,13 +6,16 @@
       "enabled": true,
       "matchDatasources": ["docker"],
       "matchUpdateTypes": ["minor"]
+    },
+    {
+      "enabled": true,
+      "matchDatasources": ["github-release"],
+      "matchUpdateTypes": ["regex"]
     }
   ],
   "regexManagers": [
     {
-      "fileMatch": [
-        "(^|/|\\.)Dockerfile$"
-      ],
+      "fileMatch": ["(^|/|\\.)Dockerfile$"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)( versioning=(?<versioning>[^\\s]+?))?\\s+.*VERSION=(?<currentValue>[^\\s]+)"
       ],
