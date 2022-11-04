@@ -2,6 +2,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20221104-43 as builder
 
 WORKDIR /src
 
+# renovate: datasource=github=release depName=coredns/coredns
 ARG VERSION=v1.10.0 \
     REPO=https://github.com/coredns/coredns.git
 
