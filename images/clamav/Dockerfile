@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20221104-43 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20221104-44 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
