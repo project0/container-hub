@@ -4,7 +4,7 @@ FROM almalinux:9.1
 
 # Add gomplate
 # renovate: datasource=github-releases depName=hairyhenderson/gomplate
-ARG GOMPLATE_VERSION=v3.10.0
+ARG GOMPLATE_VERSION=v3.11.3
 ADD https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64-slim /extra/bin/gomplate
 # Add tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /extra/bin/tini
