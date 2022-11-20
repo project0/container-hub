@@ -1,9 +1,11 @@
 # Build base image
 # project0de/base:amzn2
-FROM almalinux:9
+FROM almalinux:9.1
 
 # Add gomplate
-ADD https://github.com/hairyhenderson/gomplate/releases/download/v3.10.0/gomplate_linux-amd64-slim /extra/bin/gomplate
+# renovate: datasource=github-releases depName=hairyhenderson/gomplate
+ARG GOMPLATE_VERSION=v3.10.0
+ADD https://github.com/hairyhenderson/gomplate/releases/download/${GOMPLATE_VERSION}/gomplate_linux-amd64-slim /extra/bin/gomplate
 # Add tini
 ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini /extra/bin/tini
 

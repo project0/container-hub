@@ -3,6 +3,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20221104-53 AS builder
 ENV DESTDIR="/build"
 WORKDIR /src
 
+# renovate: datasource=github-tags depName=Exim/exim versioning=regex:^exim-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
 ARG EXIM_VERSION=exim-4.96 \
     EXIM_REPO=https://github.com/Exim/exim.git
 

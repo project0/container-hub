@@ -8,5 +8,4 @@ docker run --rm "$IMAGE" yum -q --security --secseverity=Important check-update
 result="$?"
 set -e
 
-echo "result: $result"
-echo "::set-output name=update_result::$result"
+echo "update_result=${result}" | tee >> "${GITHUB_OUTPUT}"
