@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20221118-54 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20221120-57 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -26,7 +26,7 @@ RUN yum -y install pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail
     && cmake --build build \
     && cmake --install build
 
-FROM ghcr.io/project0/container-hub/base:20221118-54
+FROM ghcr.io/project0/container-hub/base:20221120-57
 
 ENV CLAMAV_USER clamav
 
