@@ -3,17 +3,21 @@ FROM ghcr.io/project0/container-hub/base-devel:20221120-57 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-ARG DOVECOT_VERSION=2.3.19
-ARG DOVECOT_REPO=https://github.com/dovecot/core.git
+# renovate: datasource=github-tags depName=dovecot/core versioning=loose
+ARG DOVECOT_VERSION=2.3.19 \
+    DOVECOT_REPO=https://github.com/dovecot/core.git
 
-ARG PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
-ARG PIGENHOLE_VERSION=0.5.19
+# renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
+ARG PIGENHOLE_VERSION=0.5.19 \
+    PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 
-ARG XAPIAN_REPO=https://github.com/xapian/xapian.git
-ARG XAPIAN_VERSION=v1.4.19
+# renovate: datasource=github-tags depName=xapian/xapian
+ARG XAPIAN_VERSION=v1.4.19 \
+    XAPIAN_REPO=https://github.com/xapian/xapian.git
 
-ARG FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
-ARG FTS_XAPIAN_VERSION=1.5.5
+# renovate: datasource=github-releases depName=grosjo/fts-xapian
+ARG FTS_XAPIAN_VERSION=1.5.5 \
+    FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 
 RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel libsodium-devel \
