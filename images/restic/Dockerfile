@@ -1,13 +1,26 @@
-FROM golang:1.19 as builder
-
-# renovate: datasource=github-releases depName=restic/restic
-ARG VERSION="v0.14.0"
-ARG REPO="https://github.com/restic/restic.git"
-
+FROM ghcr.io/project0/container-hub/base-devel:20221120-57 as builder
 WORKDIR /src
 
-RUN git clone --depth=1 "${REPO}" --branch=$(git ls-remote --tags --refs -q "${REPO}" "${VERSION}*" | tail -n 1 | awk -F/ '{ print $3 }') /src \
+# renovate: datasource=golang-version depName=go
+ARG GO_VERSION=1.19.3
+
+# renovate: datasource=github-releases depName=restic/restic
+ARG RESTIC_VERSION="v0.14.0" \
+    RESTIC_REPO="https://github.com/restic/restic.git"
+
+# renovate: datasource=github-releases depName=rclone/rclone
+ARG RCLONE_VERSION="v1.60.1" \
+    RCLONE_REPO="https://github.com/rclone/rclone.git"
+
+RUN goinstall
+
+RUN git get-release "${RESTIC_REPO}" "${RESTIC_VERSION}" /src/restic \
+    && cd /src/restic \
     && go run build.go
+
+RUN git get-release "${RCLONE_REPO}" "${RCLONE_VERSION}" /src/rclone \
+    && cd /src/rclone \
+    && make rclone
 
 FROM ghcr.io/project0/container-hub/base:20221120-57
 
@@ -15,11 +28,14 @@ FROM ghcr.io/project0/container-hub/base:20221120-57
 RUN yum -y install mariadb postgresql \
     && cleanup
 
-COPY --from=builder /src/restic /usr/local/bin/
+COPY --from=builder /src/restic/restic /usr/local/bin/
+COPY --from=builder /src/rclone/rclone /usr/local/bin/
+
 COPY entrypoint.sh /entrypoint.sh
 
 RUN chmod a+x /entrypoint.sh \
-    && restic version
+    && restic version \
+    && rclone version
 
 VOLUME /data
 WORKDIR /data

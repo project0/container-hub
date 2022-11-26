@@ -1,18 +1,16 @@
 FROM ghcr.io/project0/container-hub/base-devel:20221120-57 as builder
-
 WORKDIR /src
+
+# renovate: datasource=golang-version depName=go
+ARG GO_VERSION=1.19.3
 
 # renovate: datasource=github-releases depName=coredns/coredns
 ARG VERSION=v1.10.0 \
     REPO=https://github.com/coredns/coredns.git
 
-ADD https://dl.google.com/go/go1.19.1.linux-amd64.tar.gz /tmp/go.tar.gz
 RUN yum -y install unbound-devel \
-    && tar -C /usr/local -xzf /tmp/go.tar.gz \
-    && ln -s /usr/local/go/bin/go  /usr/local/bin/go \
-    && ln -s /usr/local/go/bin/gofmt  /usr/local/bin/gofmt
-
-RUN git get-release "${REPO}" "${VERSION}" /src/coredns \
+    && goinstall \
+    && git get-release "${REPO}" "${VERSION}" /src/coredns \
     && cd /src/coredns \
     && echo 'unbound:github.com/coredns/unbound' >> plugin.cfg \
     && make gen \
