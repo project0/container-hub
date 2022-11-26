@@ -4,7 +4,7 @@ ENV DESTDIR /build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
-ARG DOVECOT_VERSION=2.3.19 \
+ARG DOVECOT_VERSION=2.3.19.1 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
@@ -12,7 +12,7 @@ ARG PIGENHOLE_VERSION=0.5.19 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 
 # renovate: datasource=github-tags depName=xapian/xapian
-ARG XAPIAN_VERSION=v1.4.19 \
+ARG XAPIAN_VERSION=v1.4.21 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
 
 # renovate: datasource=github-releases depName=grosjo/fts-xapian
