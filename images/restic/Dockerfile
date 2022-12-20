@@ -9,7 +9,7 @@ ARG RESTIC_VERSION="v0.14.0" \
     RESTIC_REPO="https://github.com/restic/restic.git"
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION="v1.60.1" \
+ARG RCLONE_VERSION="v1.61.0" \
     RCLONE_REPO="https://github.com/rclone/rclone.git"
 
 RUN goinstall
