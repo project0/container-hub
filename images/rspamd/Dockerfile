@@ -7,40 +7,8 @@ WORKDIR /src
 ARG RSPAMD_VERSION=3.4
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
-ARG LUJAIT_VERSION=2.0.5
-ADD http://luajit.org/download/LuaJIT-${LUJAIT_VERSION}.tar.gz /src/luajit.tar.gz
-
-ARG RAGEL_VERSION=6.10
-ADD http://www.colm.net/files/ragel/ragel-${RAGEL_VERSION}.tar.gz /src/ragel.tar.gz
-
-ARG LIBSODIUM_VERSION=1.0.18
-ARG LIBSODIUM_REPO=https://github.com/jedisct1/libsodium.git
-
-RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel \
+RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
        file-devel sqlite-devel libicu-devel openssl-devel
-
-RUN git get-release "${LIBSODIUM_REPO}" "${LIBSODIUM_VERSION}" /src/libsodium \
-    && cd /src/libsodium \
-    && ./autogen.sh \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 \
-    && make -j$(nproc) \
-    && DESTDIR=/ make install \
-    && make install
-
-# ragel is only used for buuild
-RUN tar xvf ragel.tar.gz \
-    && cd ragel-${RAGEL_VERSION} \
-    && ./configure \
-    && make -j$(nproc) \
-    && DESTDIR=/ make install
-
-# faster replacement for lua
-RUN tar xvf luajit.tar.gz \
-    && cd LuaJIT-${LUJAIT_VERSION} \
-    && make -j$(nproc) \
-    && DESTDIR=/ make install PREFIX=/usr MULTILIB=lib64 \
-    && make install PREFIX=/usr MULTILIB=lib64
-
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p build \
@@ -61,7 +29,7 @@ FROM ghcr.io/project0/container-hub/base:20221126-58
 ENV RSPAMD_USER rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 \
+RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \

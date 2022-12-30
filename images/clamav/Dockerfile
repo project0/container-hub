@@ -7,8 +7,7 @@ WORKDIR /src
 ARG CLAMAV_VERSION=1.0.0 \
     CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 
-RUN curl --proto '=https' --tlsv1.3 -sSf https://sh.rustup.rs | sh -s -- -y
-RUN yum -y install pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail-milter-devel \
+RUN yum -y install rust cargo pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail-milter-devel \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}" clamav \
     && mkdir -p build \
     && cd build \
