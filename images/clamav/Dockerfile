@@ -41,9 +41,10 @@ RUN yum -y install openssl-libs pcre2 bzip2-libs libxml2 \
 
 COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
-COPY etc/ /etc
+COPY etc/ /_etc
 
 RUN chmod a+x /entrypoint.sh \
+    && gomplate --input-dir /_etc/ --output-dir /etc \
     && clamav-config --version \
     && clamd --version \
     && freshclam --version
