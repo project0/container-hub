@@ -1,7 +1,7 @@
 FROM ghcr.io/project0/container-hub/base:20221126-58
 
 # renovate: datasource=github-releases depName=roundcube/roundcubemail
-ARG ROUNDCUBEMAIL_VERSION=1.6.0
+ARG ROUNDCUBEMAIL_VERSION=1.6.1
 
 # public key
 COPY roundcube-pubkey.asc /tmp/roundcube-pubkey.asc
@@ -10,7 +10,8 @@ COPY entrypoint.sh /entrypoint.sh
 COPY etc/ /_etc
 
 ## install lamp and roundcube
-RUN yum -y install \
+RUN dnf module install -y php:8.1 && \
+    yum -y install \
       php php-pdo php-fpm php-mysqlnd php-json php-gd php-xml php-intl php-mbstring php-ldap \
       composer \
       httpd \
