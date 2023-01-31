@@ -38,7 +38,7 @@ jobs:
             type=raw,value=${{ env.IMAGE_VERSION }}
 
       - name: Build and push
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           context: ${{ inputs.path }}
           push: ${{ github.event_name != 'pull_request' }}
