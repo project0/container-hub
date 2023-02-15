@@ -5,7 +5,7 @@ WORKDIR /src
 ARG GO_VERSION=1.20.1
 
 # renovate: datasource=github-releases depName=coredns/coredns
-ARG VERSION=v1.10.0 \
+ARG VERSION=v1.10.1 \
     REPO=https://github.com/coredns/coredns.git
 
 RUN yum -y install unbound-devel \
