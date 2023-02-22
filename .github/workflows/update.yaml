@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 2 * * *'
 
+permissions:
+  actions: write
+
 jobs:
 
   check:
@@ -22,5 +25,5 @@ jobs:
         if: steps.check_update.outputs.update_result == '100'
         uses: peter-evans/repository-dispatch@v2
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           event-type: package-updates
