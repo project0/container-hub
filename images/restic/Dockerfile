@@ -2,7 +2,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20230302-64 as builder
 WORKDIR /src
 
 # renovate: datasource=golang-version depName=go versioning=conan
-ARG GO_VERSION=1.20.1
+ARG GO_VERSION=1.20.2
 
 # renovate: datasource=github-releases depName=restic/restic
 ARG RESTIC_VERSION="v0.15.1" \
