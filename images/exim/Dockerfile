@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20230421-67 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20230425-69 AS builder
 
 ENV DESTDIR="/build"
 WORKDIR /src
@@ -21,7 +21,7 @@ RUN cd /src/exim/src \
     && cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/"
 
 # Build target docker image
-FROM ghcr.io/project0/container-hub/base:20230421-67
+FROM ghcr.io/project0/container-hub/base:20230425-69
 
 ## install libary deps
 RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 \
