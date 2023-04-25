@@ -5,7 +5,7 @@ WORKDIR /src
 ARG GO_VERSION=1.20.3
 
 # renovate: datasource=github-releases depName=restic/restic
-ARG RESTIC_VERSION="v0.15.1" \
+ARG RESTIC_VERSION="v0.15.2" \
     RESTIC_REPO="https://github.com/restic/restic.git"
 
 # renovate: datasource=github-releases depName=rclone/rclone
