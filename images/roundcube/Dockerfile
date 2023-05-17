@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base:20230513-74
+FROM ghcr.io/project0/container-hub/base:20230425-69
 
 # renovate: datasource=github-releases depName=roundcube/roundcubemail
 ARG ROUNDCUBEMAIL_VERSION=1.6.1
@@ -6,7 +6,7 @@ ARG ROUNDCUBEMAIL_VERSION=1.6.1
 # public key
 COPY roundcube-pubkey.asc /tmp/roundcube-pubkey.asc
 # copy config templates and entrypoint
-COPY entrypoint.sh /entrypoint.sh
+COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 COPY etc/ /_etc
 
 ## install lamp and roundcube
@@ -25,13 +25,12 @@ RUN dnf module install -y php:8.1 && \
     && gpg --batch --verify roundcubemail.tar.gz.asc roundcubemail.tar.gz \
     && tar -xf roundcubemail.tar.gz -C /usr/src/ \
     && mv /usr/src/roundcubemail-${ROUNDCUBEMAIL_VERSION} /usr/src/roundcubemail \
-    && (cd /usr/src/roundcubemail && composer require roundcube/larry) \
+    && (cd /usr/src/roundcubemail && COMPOSER_ALLOW_SUPERUSER=1 composer -n require roundcube/larry) \
     && ln -sf /usr/src/roundcubemail/public_html /var/www/html/public_html \
     && ln -sf /etc/roundcube/config.inc.php /usr/src/roundcubemail/config/config.inc.php \
     && for i in /usr/src/roundcubemail/plugins/*; do test -f "${i}/config.inc.php.dist" && cp -v "${i}/config.inc.php.dist" "${i}/config.inc.php"; done \
     && chown -R apache:apache /usr/src/roundcubemail \
-    && rm -rf roundcubemail.tar.gz roundcubemail.tar.gz.asc /usr/src/roundcubemail/installer ~/.gnup \
-    && chmod a+x /entrypoint.sh
+    && rm -rf roundcubemail.tar.gz roundcubemail.tar.gz.asc /usr/src/roundcubemail/installer ~/.gnup
 
 ENV ROUNDCUBEMAIL_DB_DIR=/data/db \
     ROUNDCUBE_TEMP_DIR=/data/tmp \
