@@ -4,7 +4,7 @@ ENV DESTDIR /build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=3.5
+ARG RSPAMD_VERSION=3.6
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
