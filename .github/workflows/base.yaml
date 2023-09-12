@@ -38,7 +38,7 @@ jobs:
 
       - name: Docker meta (base)
         id: meta-base
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             ghcr.io/${{ github.repository }}/base
@@ -56,7 +56,7 @@ jobs:
 
       - name: Docker meta (base-devel)
         id: meta-base-devel
-        uses: docker/metadata-action@v4
+        uses: docker/metadata-action@v5
         with:
           images: |
             ghcr.io/${{ github.repository }}/base-devel
