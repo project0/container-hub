@@ -4,7 +4,7 @@ ENV DESTDIR /build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
-ARG DOVECOT_VERSION=2.3.20 \
+ARG DOVECOT_VERSION=2.3.21 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
