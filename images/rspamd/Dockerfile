@@ -8,7 +8,7 @@ ARG RSPAMD_VERSION=3.7.3
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
-       file-devel sqlite-devel libicu-devel openssl-devel
+       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p build \
@@ -29,7 +29,7 @@ FROM ghcr.io/project0/container-hub/base:20231020-86
 ENV RSPAMD_USER rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit \
+RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
