@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20231020-86 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20231116-87 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -26,7 +26,7 @@ RUN yum -y install rust cargo pcre2-devel libxml2-devel json-c-devel ncurses-dev
     && cmake --build build \
     && cmake --install build
 
-FROM ghcr.io/project0/container-hub/base:20231020-86
+FROM ghcr.io/project0/container-hub/base:20231116-87
 
 ENV CLAMAV_USER clamav
 
