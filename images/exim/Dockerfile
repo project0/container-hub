@@ -4,11 +4,12 @@ ENV DESTDIR="/build"
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=Exim/exim versioning=regex:^exim-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
-ARG EXIM_VERSION=exim-4.96.2 \
+ARG EXIM_VERSION=exim-4.97 \
     EXIM_REPO=https://github.com/Exim/exim.git
 
 # deps
-RUN yum install -y openssl-devel mysql-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel
+RUN yum install -y perl-File-FcntlLock perl-experimental \
+        openssl-devel mysql-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel libopendmarc-devel
 
 # exim
 RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim
@@ -24,7 +25,7 @@ RUN cd /src/exim/src \
 FROM ghcr.io/project0/container-hub/base:20231215-92
 
 ## install libary deps
-RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 \
+RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 libopendmarc \
     && cleanup \
     && mkdir -p /_etc
 

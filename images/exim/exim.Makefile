@@ -1,3 +1,4 @@
+# https://github.com/Exim/exim/blob/master/src/src/EDITME
 CFLAGS  += -I/build/usr/include
 
 BIN_DIRECTORY=/usr/bin
@@ -69,6 +70,12 @@ SUPPORT_SPF=yes
 LDFLAGS += -L/build/usr/lib64 -lspf2
 
 EXPERIMENTAL_ARC=ye
+
+SUPPORT_SRS=yes
+SUPPORT_DMARC=yes
+# DMARC_API=100400
+CFLAGS += -I/usr/local/include
+LDFLAGS += -lopendmarc
 
 SYSTEM_ALIASES_FILE=/etc/aliases
 HAVE_IPV6=yes
