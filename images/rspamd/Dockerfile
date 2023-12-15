@@ -4,18 +4,24 @@ ENV DESTDIR /build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=3.7.3
+ARG RSPAMD_VERSION=3.7.4
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
-       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel
+       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel jemalloc-devel libcurl-devel
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p build \
     && cd build \
-    && cmake3 -DCMAKE_INSTALL_PREFIX=/usr -DRSPAMD_USER='rspamd' -DRSPAMD_GROUP='rspamd' \
+    && cmake3 -DCMAKE_INSTALL_PREFIX=/usr -DRSPAMD_USER='rspamd' \
       -DCONFDIR=/etc/rspamd -DRUNDIR=/run/rspamd -DLOGDIR=/var/log/rspamd -DDBDIR=/var/lib/rspamd \
-      -DENABLE_PCRE2=ON -DENABLE_DB=ON -DENABLE_REDIRECTOR=ON -DENABLE_URL_INCLUDE=ON \
+      -DENABLE_ANALYZER=ON \
+      -DENABLE_HYPERSCAN=ON \
+      -DENABLE_JEMALLOC=ON \
+      -DENABLE_OPTIMIZATION=ON \
+      -DENABLE_PCRE2=ON \
+      -DENABLE_REDIRECTOR=ON \
+      -DENABLE_URL_INCLUDE=ON \
       ../rspamd \
     && make -j$(nproc) \
     && make install
@@ -29,7 +35,7 @@ FROM ghcr.io/project0/container-hub/base:20231215-92
 ENV RSPAMD_USER rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan \
+RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan jemalloc \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
