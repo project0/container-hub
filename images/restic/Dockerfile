@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20240123-94 as builder
+FROM ghcr.io/project0/container-hub/base-devel:20240123-96 as builder
 WORKDIR /src
 
 # renovate: datasource=golang-version depName=go versioning=conan
@@ -22,7 +22,7 @@ RUN git get-release "${RCLONE_REPO}" "${RCLONE_VERSION}" /src/rclone \
     && cd /src/rclone \
     && make rclone
 
-FROM ghcr.io/project0/container-hub/base:20240123-94
+FROM ghcr.io/project0/container-hub/base:20240123-96
 
 # install additional tools
 RUN yum -y install mariadb postgresql \
