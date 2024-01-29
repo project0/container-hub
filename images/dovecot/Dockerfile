@@ -16,7 +16,7 @@ ARG XAPIAN_VERSION=v1.4.24 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
 
 # renovate: datasource=github-releases depName=grosjo/fts-xapian
-ARG FTS_XAPIAN_VERSION=1.5.7 \
+ARG FTS_XAPIAN_VERSION=1.5.8 \
     FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 
 RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
