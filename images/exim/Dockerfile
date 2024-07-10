@@ -4,7 +4,7 @@ ENV DESTDIR="/build"
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=Exim/exim versioning=regex:^exim-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
-ARG EXIM_VERSION=exim-4.97.1 \
+ARG EXIM_VERSION=exim-4.98 \
     EXIM_REPO=https://github.com/Exim/exim.git
 
 # deps
