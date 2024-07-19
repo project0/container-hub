@@ -12,7 +12,7 @@ ARG PIGENHOLE_VERSION=0.5.21 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 
 # renovate: datasource=github-tags depName=xapian/xapian
-ARG XAPIAN_VERSION=v1.4.25 \
+ARG XAPIAN_VERSION=v1.4.26 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
 
 # renovate: datasource=github-releases depName=grosjo/fts-xapian
