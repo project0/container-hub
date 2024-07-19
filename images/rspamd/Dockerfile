@@ -1,14 +1,14 @@
 FROM ghcr.io/project0/container-hub/base-devel:20240719-119 AS builder
 
-ENV DESTDIR /build
+ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=3.8.4
+ARG RSPAMD_VERSION=3.9.0
 ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
-       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel jemalloc-devel libcurl-devel
+       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel jemalloc-devel libcurl-devel libarchive-devel
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p build \
@@ -32,10 +32,10 @@ RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
 
 FROM ghcr.io/project0/container-hub/base:20240719-119
 
-ENV RSPAMD_USER rspamd
+ENV RSPAMD_USER=rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan jemalloc \
+RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan jemalloc libarchive \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
