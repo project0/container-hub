@@ -8,7 +8,7 @@ ARG DOVECOT_VERSION=2.3.21.1 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
-ARG PIGENHOLE_VERSION=0.5.21 \
+ARG PIGENHOLE_VERSION=0.5.21.1 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 
 # renovate: datasource=github-tags depName=xapian/xapian
