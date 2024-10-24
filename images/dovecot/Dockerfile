@@ -6,18 +6,22 @@ WORKDIR /src
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
 ARG DOVECOT_VERSION=2.3.21.1 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
+LABEL version="${DOVECOT_VERSION}"
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
 ARG PIGENHOLE_VERSION=0.5.21.1 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
+LABEL version.pigenhole="${PIGENHOLE_VERSION}"
 
 # renovate: datasource=github-tags depName=xapian/xapian
 ARG XAPIAN_VERSION=v1.4.26 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
+LABEL version.xapian="${XAPIAN_VERSION}"
+    # renovate: datasource=github-releases depName=grosjo/fts-xapian
 
-# renovate: datasource=github-releases depName=grosjo/fts-xapian
 ARG FTS_XAPIAN_VERSION=1.7.16 \
     FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
+LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
 RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
       sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel libsodium-devel \

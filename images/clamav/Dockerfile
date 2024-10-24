@@ -6,6 +6,7 @@ WORKDIR /src
 # renovate: datasource=github-releases depName=Cisco-Talos/clamav
 ARG CLAMAV_VERSION=1.0.0 \
     CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
+LABEL version="${CLAMAV_VERSION}"
 
 RUN yum -y install rust cargo pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail-milter-devel \
     && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}" clamav \

@@ -7,10 +7,12 @@ ARG GO_VERSION=1.23.2
 # renovate: datasource=github-releases depName=restic/restic
 ARG RESTIC_VERSION="v0.17.1" \
     RESTIC_REPO="https://github.com/restic/restic.git"
+LABEL version="${RESTIC_VERSION}"
 
 # renovate: datasource=github-releases depName=rclone/rclone
 ARG RCLONE_VERSION="v1.68.1" \
     RCLONE_REPO="https://github.com/rclone/rclone.git"
+LABEL version.restic="${RCLONE_VERSION}"
 
 RUN goinstall
 
