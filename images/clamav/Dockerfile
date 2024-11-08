@@ -3,7 +3,7 @@ FROM ghcr.io/project0/container-hub/base-devel:20241104-149 AS builder
 ENV DESTDIR /build
 WORKDIR /src
 
-# renovate: datasource=github-releases depName=Cisco-Talos/clamav
+# renovate: datasource=github-tags depName=Cisco-Talos/clamav versioning=regex:^clamav-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
 ARG CLAMAV_VERSION=1.0.0 \
     CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 LABEL version="${CLAMAV_VERSION}"
