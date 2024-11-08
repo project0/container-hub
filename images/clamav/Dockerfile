@@ -4,12 +4,12 @@ ENV DESTDIR /build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=Cisco-Talos/clamav versioning=regex:^clamav-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
-ARG CLAMAV_VERSION=clamav-1.0.0 \
+ARG CLAMAV_VERSION=clamav-1.4.1 \
     CLAMAV_REPO=https://github.com/Cisco-Talos/clamav-devel.git
 LABEL version="${CLAMAV_VERSION}"
 
 RUN yum -y install rust cargo pcre2-devel libxml2-devel json-c-devel ncurses-devel sendmail-milter-devel \
-    && git get-release "${CLAMAV_REPO}" "clamav-${CLAMAV_VERSION}" clamav \
+    && git get-release "${CLAMAV_REPO}" "${CLAMAV_VERSION}" clamav \
     && mkdir -p build \
     && cd build \
     && cmake ../clamav -B build \
