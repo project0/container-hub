@@ -14,7 +14,7 @@ ARG PIGENHOLE_VERSION=0.5.21.1 \
 LABEL version.pigenhole="${PIGENHOLE_VERSION}"
 
 # renovate: datasource=github-tags depName=xapian/xapian
-ARG XAPIAN_VERSION=v1.4.26 \
+ARG XAPIAN_VERSION=v1.4.29 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
 LABEL version.xapian="${XAPIAN_VERSION}"
     # renovate: datasource=github-releases depName=grosjo/fts-xapian
