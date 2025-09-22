@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20250917-230 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20250922-241 AS builder
 
 ENV DESTDIR /build
 WORKDIR /src
@@ -72,7 +72,7 @@ RUN cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/" \
     && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20250917-230
+FROM ghcr.io/project0/container-hub/base:20250922-241
 
 ENV DOVECOT_DHPARAM_BIT=4096
 
