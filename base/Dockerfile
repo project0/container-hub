@@ -1,6 +1,6 @@
 # Build base image
 # project0de/base:amzn2
-FROM almalinux:9.5
+FROM almalinux:9.6
 
 # Add gomplate
 # renovate: datasource=github-releases depName=hairyhenderson/gomplate
