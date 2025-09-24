@@ -10,7 +10,7 @@ ARG RESTIC_VERSION="v0.18.1" \
 LABEL version="${RESTIC_VERSION}"
 
 # renovate: datasource=github-releases depName=rclone/rclone
-ARG RCLONE_VERSION="v1.71.0" \
+ARG RCLONE_VERSION="v1.71.1" \
     RCLONE_REPO="https://github.com/rclone/rclone.git"
 LABEL version.restic="${RCLONE_VERSION}"
 
