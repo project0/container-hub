@@ -19,7 +19,7 @@ ARG XAPIAN_VERSION=v1.4.29 \
 LABEL version.xapian="${XAPIAN_VERSION}"
     # renovate: datasource=github-releases depName=grosjo/fts-xapian
 
-ARG FTS_XAPIAN_VERSION=1.8.6 \
+ARG FTS_XAPIAN_VERSION=1.9.3 \
     FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
