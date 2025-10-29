@@ -9,7 +9,7 @@ ARG DOVECOT_VERSION=2.3.21.1 \
 LABEL version="${DOVECOT_VERSION}"
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
-ARG PIGENHOLE_VERSION=0.5.21.1 \
+ARG PIGENHOLE_VERSION=2.4.2 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 LABEL version.pigenhole="${PIGENHOLE_VERSION}"
 
