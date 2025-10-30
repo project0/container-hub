@@ -1,15 +1,15 @@
 FROM ghcr.io/project0/container-hub/base-devel:20251018-263 AS builder
 
-ENV DESTDIR /build
+ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
-ARG DOVECOT_VERSION=2.3.21.1 \
+ARG DOVECOT_VERSION=2.4.2 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 LABEL version="${DOVECOT_VERSION}"
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
-ARG PIGENHOLE_VERSION=0.5.21.1 \
+ARG PIGENHOLE_VERSION=2.4.2 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 LABEL version.pigenhole="${PIGENHOLE_VERSION}"
 
@@ -19,13 +19,37 @@ ARG XAPIAN_VERSION=v1.4.29 \
 LABEL version.xapian="${XAPIAN_VERSION}"
     # renovate: datasource=github-releases depName=grosjo/fts-xapian
 
-ARG FTS_XAPIAN_VERSION=1.8.6 \
+ARG FTS_XAPIAN_VERSION=1.9.3 \
     FTS_XAPIAN_REPO=https://github.com/grosjo/fts-xapian.git
 LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
-RUN yum -y install wget which tcl openssl-devel mysql-devel postgresql-devel openldap-devel krb5-devel pam-devel \
-      sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel libsodium-devel \
-      lua-devel clucene-core-devel expat-devel libexttextcat-devel libcap-devel libicu-devel gettext-devel
+# libexttextcat (no longer available as distro devel package)
+# renovate: datasource=git-tags depName=libreoffice/libexttextcat
+ARG LIBEXTTEXTCAT_VERSION=v3.4.7 \
+    LIBEXTTEXTCAT_REPO=https://git.libreoffice.org/libexttextcat
+LABEL version.libexttextcat="${LIBEXTTEXTCAT_VERSION}"
+
+RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
+    sqlite-devel bzip2-devel zlib-devel lz4-devel xz-devel libsodium-devel \
+    lua-devel expat-devel libcap-devel libicu-devel gettext-devel \
+    autoconf automake libtool make gcc gcc-c++ pkgconfig cmake
+
+RUN git get-release "${LIBEXTTEXTCAT_REPO}" "${LIBEXTTEXTCAT_VERSION}" /src/libexttextcat \
+    && cd /src/libexttextcat \
+    && ./autogen.sh \
+    && ./configure --prefix=/usr --libdir=/usr/lib64 --disable-static --with-dovecot=/src/dovecot/lib/dovecot \
+    && make -j$(nproc) \
+    && make install && DESTDIR="" make install
+
+# als used by flatcurve fts plugin
+RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
+    && cd /src/xapian \
+    && touch xapian-applications/omega/.nobootstrap  xapian-bindings/.nobootstrap xapian-data/.nobootstrap xapian-maintainer-tools/.nobootstrap \
+    && ./bootstrap --download-tools=never \
+    && ./configure --prefix=/usr --libdir=/usr/lib64  --disable-documentation \
+    && make -j$(nproc) \
+    && DESTDIR= make install \
+    && make install
 
 RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
     && cd /src/dovecot \
@@ -36,7 +60,7 @@ RUN git get-release "${DOVECOT_REPO}" "${DOVECOT_VERSION}" /src/dovecot \
       --with-ssl=openssl --with-shared-libs \
       --with-zlib --with-bzlib --with-lzma --with-lz4 \
       --with-libcap --with-lua \
-      --with-lucene --with-solr --with-textcat --with-icu \
+      --with-textcat --with-flatcurve --with-icu \
       --with-sql --with-ldap --with-pgsql --with-mysql --with-sqlite \
       --with-shadow --with-pam --with-gssapi \
     && make -j$(nproc) \
@@ -50,25 +74,16 @@ RUN git get-release "${PIGENHOLE_REPO}" "${PIGENHOLE_VERSION}" /src/pigenhole \
     && make -j$(nproc) \
     && make install
 
-# FTS plugins
-RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
-    && cd /src/xapian \
-    && touch xapian-applications/omega/.nobootstrap  xapian-bindings/.nobootstrap xapian-data/.nobootstrap xapian-maintainer-tools/.nobootstrap \
-    && ./bootstrap --download-tools=never \
-    && ./configure --prefix=/usr --libdir=/usr/lib64  --disable-documentation \
-    && make -j$(nproc) \
-    && DESTDIR= make install \
-    && make install
-
+## FTS plugins
 RUN git get-release "${FTS_XAPIAN_REPO}" "${FTS_XAPIAN_VERSION}" /src/fts-xapian \
     && cd /src/fts-xapian \
     && autoreconf -vif \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/src/dovecot \
+    && ./configure --prefix=/usr --libdir=/usr/lib64 --with-dovecot=/usr/lib64/dovecot/ \
     && make -j$(nproc) \
     && make install
 
 # cleanup
-RUN cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/" \
+RUN cp -aRv /usr/lib64/mariadb/* "${DESTDIR}/usr/lib64/" \
     && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
@@ -79,8 +94,8 @@ ENV DOVECOT_DHPARAM_BIT=4096
 COPY --from=builder /build /
 COPY entrypoint.sh /entrypoint.sh
 
-RUN yum install -y openssl openssl-libs postgresql-libs sqlite openldap libsodium \
-      krb5-libs pam bzip2 zlib lz4 libicu libexttextcat libcap clucene-core expat \
+RUN yum install -y openssl openssl-libs mariadb-connector-c postgresql-private-libs sqlite openldap libsodium \
+    krb5-libs pam bzip2 zlib lz4 libicu libcap expat pcre2-utf32 \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
