@@ -10,7 +10,7 @@ LABEL version="${EXIM_VERSION}"
 
 # deps
 RUN yum install -y perl-File-FcntlLock perl-experimental \
-        openssl-devel mysql-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel libopendmarc-devel
+        openssl-devel mariadb-devel libidn-devel libidn2-devel libdb-devel pcre2-devel libspf2-devel libopendmarc-devel
 
 # exim
 RUN git get-release "${EXIM_REPO}" "${EXIM_VERSION}" /src/exim
@@ -20,13 +20,13 @@ RUN cd /src/exim/src \
     && useradd exim \
     && make install \
     && install -dm0755 "${DESTDIR}/usr/lib/exim/lookups" "${DESTDIR}/var/log/exim" "${DESTDIR}/var/spool/exim" "${DESTDIR}/usr/lib64" \
-    && cp -aRv /usr/lib64/mysql/* "${DESTDIR}/usr/lib64/"
+    && cp -aRv /usr/lib64/mariadb/* "${DESTDIR}/usr/lib64/"
 
 # Build target docker image
 FROM ghcr.io/project0/container-hub/base:20251023-265
 
 ## install libary deps
-RUN yum -y install openssl-libs libidn libidn2 libdb pcre2 libspf2 libopendmarc \
+RUN yum -y install mariadb-connector-c openssl-libs libidn libidn2 libdb pcre2 libspf2 libopendmarc \
     && cleanup \
     && mkdir -p /_etc
 
@@ -35,7 +35,7 @@ COPY entrypoint.sh /entrypoint.sh
 # COPY etc/ /_etc
 
 # setup exim
-ENV EXIM_USER exim
+ENV EXIM_USER=exim
 COPY --from=builder /build /
 RUN echo "${EXIM_USER}:x:79:79:Exim MTA:/var/spool/exim:/sbin/nologin" >> /etc/passwd \
     && echo "${EXIM_USER}:x:79:" >> /etc/group \
