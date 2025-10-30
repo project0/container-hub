@@ -5,7 +5,7 @@ WORKDIR /src
 ARG GO_VERSION=1.25.3
 
 # renovate: datasource=github-releases depName=coredns/coredns
-ARG VERSION=v1.12.4 \
+ARG VERSION=v1.13.1 \
     REPO=https://github.com/coredns/coredns.git
 LABEL version="${VERSION}"
 
