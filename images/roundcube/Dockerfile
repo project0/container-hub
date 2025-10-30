@@ -11,9 +11,8 @@ COPY --chmod=0755 entrypoint.sh /entrypoint.sh
 COPY etc/ /_etc
 
 ## install lamp and roundcube
-RUN dnf module install -y php:8.1 && \
-    yum -y install \
-      php php-pdo php-fpm php-mysqlnd php-json php-gd php-xml php-intl php-mbstring php-ldap \
+RUN yum -y install \
+      gpg php php-pdo php-fpm php-mysqlnd php-json php-gd php-xml php-intl php-mbstring php-ldap \
       composer \
       httpd \
       tar \
