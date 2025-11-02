@@ -24,9 +24,9 @@ ARG FTS_XAPIAN_VERSION=1.9.3 \
 LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
 # libexttextcat (no longer available as distro devel package)
-# renovate: datasource=git-tags depName=libreoffice/libexttextcat
+# renovate: datasource=git-tags depName=LibreOffice/libexttextcat
 ARG LIBEXTTEXTCAT_VERSION=v3.4.7 \
-    LIBEXTTEXTCAT_REPO=https://git.libreoffice.org/libexttextcat
+    LIBEXTTEXTCAT_REPO=https://github.com/LibreOffice/libexttextcat.git
 LABEL version.libexttextcat="${LIBEXTTEXTCAT_VERSION}"
 
 RUN yum -y install wget which tcl openssl-devel mariadb-devel postgresql-devel openldap-devel krb5-devel pam-devel \
