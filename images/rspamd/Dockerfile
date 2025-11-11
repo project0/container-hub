@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20251023-265 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20251111-273 AS builder
 
 ENV DESTDIR=/build
 WORKDIR /src
@@ -31,7 +31,7 @@ RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20251023-265
+FROM ghcr.io/project0/container-hub/base:20251111-273
 
 ENV RSPAMD_USER=rspamd
 
