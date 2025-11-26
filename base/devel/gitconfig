@@ -3,4 +3,4 @@ detachedHead = false
 
 [alias]
 # alias to clone only the matched release
-get-release = "!f(){ git clone --depth=1 \"$1\" --branch="$(git ls-remote --tags --refs -q \"$1\" \"$2\" | tail -n 1 | awk -F/ '{ print $3 }')" \"$3\" ; };f"
+get-release = "!f(){ git clone --depth=1 \"$1\" --branch="$(git ls-remote --tags --refs -q \"$1\" \"$2\" | tail -n 1 | awk -F'refs/tags/' '{ print $3 }')" \"$3\" ; };f"

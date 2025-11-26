@@ -1,6 +1,6 @@
 FROM ghcr.io/project0/container-hub/base-devel:20251126-280 AS builder
 
-ENV DESTDIR /build
+ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=Cisco-Talos/clamav versioning=regex:^clamav-(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
@@ -29,7 +29,7 @@ RUN yum -y install rust cargo pcre2-devel libxml2-devel json-c-devel ncurses-dev
 
 FROM ghcr.io/project0/container-hub/base:20251126-280
 
-ENV CLAMAV_USER clamav
+ENV CLAMAV_USER=clamav
 
 # install libary deps and user
 RUN yum -y install openssl-libs pcre2 bzip2-libs libxml2 \
