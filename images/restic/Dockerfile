@@ -24,7 +24,7 @@ RUN git get-release "${RCLONE_REPO}" "${RCLONE_VERSION}" /src/rclone \
     && cd /src/rclone \
     && make rclone
 
-FROM ghcr.io/project0/container-hub/base:20251126-279
+FROM ghcr.io/project0/container-hub/base:20251126-280
 
 # install additional tools
 RUN yum -y install mariadb postgresql \
