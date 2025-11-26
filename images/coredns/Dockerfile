@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20251126-279 as builder
+FROM ghcr.io/project0/container-hub/base-devel:20251126-280 as builder
 WORKDIR /src
 
 # renovate: datasource=golang-version depName=go versioning=conan
