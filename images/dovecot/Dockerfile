@@ -87,7 +87,7 @@ RUN cp -aRv /usr/lib64/mariadb/* "${DESTDIR}/usr/lib64/" \
     && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20251126-279
+FROM ghcr.io/project0/container-hub/base:20251126-280
 
 ENV DOVECOT_DHPARAM_BIT=4096
 

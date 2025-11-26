@@ -17,7 +17,7 @@ RUN yum -y install unbound-devel \
     && make gen \
     && make coredns CGO_ENABLED=1
 
-FROM ghcr.io/project0/container-hub/base:20251126-279
+FROM ghcr.io/project0/container-hub/base:20251126-280
 COPY --from=builder /src/coredns/coredns /usr/local/bin/
 
 RUN yum -y install unbound-libs openssl openssl-libs \
