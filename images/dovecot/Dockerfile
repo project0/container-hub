@@ -4,7 +4,7 @@ ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
-ARG DOVECOT_VERSION=2.4.2 \
+ARG DOVECOT_VERSION=2.4.3 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 LABEL version="${DOVECOT_VERSION}"
 
