@@ -1,8 +1,8 @@
-FROM ghcr.io/project0/container-hub/base-devel:20251126-280 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20251224-291 AS builder
 WORKDIR /src
 
 # renovate: datasource=golang-version depName=go versioning=conan
-ARG GO_VERSION=1.25.4
+ARG GO_VERSION=1.26.1
 
 # renovate: datasource=github-releases depName=coredns/coredns
 ARG VERSION=v1.13.1 \
@@ -17,7 +17,7 @@ RUN yum -y install unbound-devel \
     && make gen \
     && make coredns CGO_ENABLED=1
 
-FROM ghcr.io/project0/container-hub/base:20251126-280
+FROM ghcr.io/project0/container-hub/base:20251224-291
 COPY --from=builder /src/coredns/coredns /usr/local/bin/
 
 RUN yum -y install unbound-libs openssl openssl-libs \
