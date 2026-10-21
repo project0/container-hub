@@ -1,15 +1,17 @@
 {
   "enabled": true,
-  "extends": ["config:base", ":rebaseStalePrs"],
+  "extends": ["config:recommended", ":rebaseStalePrs"],
   "packageRules": [
     {
       "enabled": true,
       "automerge": true,
       "matchDatasources": ["docker"],
-      "matchPackagePrefixes": ["ghcr.io/project0/container-hub/"],
       "versioning": "regex:^(?<major>\\d+)(-(?<minor>\\d+))?$",
       "groupName": "base images",
-      "groupSlug": "base-images"
+      "groupSlug": "base-images",
+      "matchPackageNames": [
+        "ghcr.io/project0/container-hub/{/,}**"
+      ]
     },
     {
       "enabled": true,
@@ -22,12 +24,11 @@
       "matchUpdateTypes": ["regex"]
     }
   ],
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": ["(^|/|\\.)Dockerfile$"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)( versioning=(?<versioning>[^\\s]+?))?\\s+.*VERSION=[\"']?(?<currentValue>[^\"'\\s]+)"
-      ],
+      "customType": "regex",
+      "managerFilePatterns": ["/(^|/|\\.)Dockerfile$/"],
+      "matchStrings": ["# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)( versioning=(?<versioning>[^\\s]+?))?\\s+.*VERSION=[\"']?(?<currentValue>[^\"'\\s]+)"],
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     }
   ]
