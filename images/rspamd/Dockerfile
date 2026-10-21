@@ -4,26 +4,48 @@ ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=3.13.0
-ARG RSPAMD_REPO=https://github.com/rspamd/rspamd.git
+ARG RSPAMD_VERSION=3.13.0 \
+    RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 LABEL version="${RSPAMD_VERSION}"
 
-RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel ragel-devel luajit-devel \
-       file-devel sqlite-devel libicu-devel openssl-devel hyperscan-devel jemalloc-devel libcurl-devel libarchive-devel
+# renovate: datasource=github-releases depName=VectorCamp/vectorscan versioning=regex:^vectorscan/(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
+ARG VECTORSCAN_VERSION=5.4.12 \
+    VECTORSCAN_REPO=https://github.com/VectorCamp/vectorscan.git
+LABEL version.vectorscan="${VECTORSCAN_VERSION}"
+
+RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel luajit-devel \
+       file-devel sqlite-devel libicu-devel openssl-devel jemalloc-devel libcurl-devel libarchive-devel boost-devel
+
+
+ARG RAGEL_VERSION=6.10
+ADD http://www.colm.net/files/ragel/ragel-${RAGEL_VERSION}.tar.gz /src/ragel.tar.gz
+# ragel is only used for buuild
+RUN tar xvf ragel.tar.gz \
+    && cd ragel-${RAGEL_VERSION} \
+    && ./configure \
+    && make -j$(nproc) \
+    && DESTDIR=/ make install
+
+RUN git clone "${VECTORSCAN_REPO}" /src/vectorscan \
+    && mkdir -p /src/vectorscan/build \
+    && cd /src/vectorscan/build \
+    && cmake3 -DCMAKE_INSTALL_PREFIX=/usr ../ \
+    && make -j$(nproc) \
+    && make install
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
-    && mkdir -p build \
-    && cd build \
+    && mkdir -p /src/rspamd/build \
+    && cd /src/rspamd/build \
     && cmake3 -DCMAKE_INSTALL_PREFIX=/usr -DRSPAMD_USER='rspamd' \
       -DCONFDIR=/etc/rspamd -DRUNDIR=/run/rspamd -DLOGDIR=/var/log/rspamd -DDBDIR=/var/lib/rspamd \
       -DENABLE_ANALYZER=ON \
-      -DENABLE_HYPERSCAN=ON \
-      -DENABLE_JEMALLOC=ON \
+      -DENABLE_HYPERSCAN=OFF \
+      -DENABLE_JEMALLOC=OFF \
       -DENABLE_OPTIMIZATION=ON \
       -DENABLE_PCRE2=ON \
       -DENABLE_REDIRECTOR=ON \
       -DENABLE_URL_INCLUDE=ON \
-      ../rspamd \
+      ../ \
     && make -j$(nproc) \
     && make install
 
@@ -36,7 +58,7 @@ FROM ghcr.io/project0/container-hub/base:20251126-280
 ENV RSPAMD_USER=rspamd
 
 # install libary deps and user
-RUN yum -y install openssl-libs libevent libicu pcre2 libsodium ragel luajit hyperscan jemalloc libarchive \
+RUN yum -y install openssl-libs libevent libicu pcre2 libsodium luajit jemalloc libarchive \
     && yum -y update \
     && yum clean all \
     && rm -rf /var/cache/yum \
