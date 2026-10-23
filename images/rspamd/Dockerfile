@@ -1,37 +1,25 @@
-FROM ghcr.io/project0/container-hub/base-devel:20261021-383 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20261022-390 AS builder
 
 ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=3.13.0 \
+ARG RSPAMD_VERSION=4.2.3 \
     RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 LABEL version="${RSPAMD_VERSION}"
-
-# renovate: datasource=github-releases depName=VectorCamp/vectorscan versioning=regex:^vectorscan/(?<major>\d+)\.(?<minor>\d+)\.?(?<patch>\d+)?$
-ARG VECTORSCAN_VERSION=5.4.12 \
-    VECTORSCAN_REPO=https://github.com/VectorCamp/vectorscan.git
-LABEL version.vectorscan="${VECTORSCAN_VERSION}"
 
 RUN yum -y install cmake3 libevent-devel glib2-devel pcre2-devel libcurl-devel libsodium-devel luajit-devel \
        file-devel sqlite-devel libicu-devel openssl-devel jemalloc-devel libcurl-devel libarchive-devel boost-devel
 
 
-ARG RAGEL_VERSION=6.10
-ADD http://www.colm.net/files/ragel/ragel-${RAGEL_VERSION}.tar.gz /src/ragel.tar.gz
+ARG RAGEL_VERSION=6.11
+ADD https://www.colm.net/files/ragel/ragel-${RAGEL_VERSION}.tar.gz /src/ragel.tar.gz
 # ragel is only used for buuild
 RUN tar xvf ragel.tar.gz \
     && cd ragel-${RAGEL_VERSION} \
     && ./configure \
     && make -j$(nproc) \
     && DESTDIR=/ make install
-
-RUN git clone "${VECTORSCAN_REPO}" /src/vectorscan \
-    && mkdir -p /src/vectorscan/build \
-    && cd /src/vectorscan/build \
-    && cmake3 -DCMAKE_INSTALL_PREFIX=/usr ../ \
-    && make -j$(nproc) \
-    && make install
 
 RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
     && mkdir -p /src/rspamd/build \
@@ -53,7 +41,7 @@ RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20261021-383
+FROM ghcr.io/project0/container-hub/base:20261022-390
 
 ENV RSPAMD_USER=rspamd
 
