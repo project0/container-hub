@@ -16,7 +16,7 @@ function tpl() {
 
 # create settings for inc and conf template files
 mkdir -p /_etc/rspamd/override.d/
-grep -R override.d /etc/rspamd | grep -v '#' | grep -Poe 'LOCAL_CONFDIR/.+(inc|conf)' | grep -Poe '[\w-_]+.(inc|conf)$' | while read -r file; do tpl "$file"; done
+grep -R override.d /etc/rspamd | grep -v '#' | grep -Poe 'LOCAL_CONFDIR/.+(inc|conf)' | grep -Poe '[\w_-]+.(inc|conf)$' | while read -r file; do tpl "$file"; done
 
 # process config templates
 gomplate --input-dir /_etc/ --output-dir /etc
