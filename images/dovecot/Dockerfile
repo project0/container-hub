@@ -4,17 +4,17 @@ ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-tags depName=dovecot/core versioning=loose
-ARG DOVECOT_VERSION=2.4.2 \
+ARG DOVECOT_VERSION=2.4.5 \
     DOVECOT_REPO=https://github.com/dovecot/core.git
 LABEL version="${DOVECOT_VERSION}"
 
 # renovate: datasource=github-tags depName=dovecot/pigeonhole versioning=loose
-ARG PIGENHOLE_VERSION=2.4.2 \
+ARG PIGENHOLE_VERSION=2.4.5 \
     PIGENHOLE_REPO=https://github.com/dovecot/pigeonhole.git
 LABEL version.pigenhole="${PIGENHOLE_VERSION}"
 
 # renovate: datasource=github-tags depName=xapian/xapian
-ARG XAPIAN_VERSION=v1.5.2 \
+ARG XAPIAN_VERSION=v2.1.0 \
     XAPIAN_REPO=https://github.com/xapian/xapian.git
 LABEL version.xapian="${XAPIAN_VERSION}"
 
@@ -25,7 +25,7 @@ LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
 # libexttextcat (no longer available as distro devel package)
 # renovate: datasource=git-tags depName=LibreOffice/libexttextcat
-ARG LIBEXTTEXTCAT_VERSION=v3.4.7 \
+ARG LIBEXTTEXTCAT_VERSION=v3.4.8 \
     LIBEXTTEXTCAT_REPO=https://github.com/LibreOffice/libexttextcat.git
 LABEL version.libexttextcat="${LIBEXTTEXTCAT_VERSION}"
 
@@ -44,8 +44,7 @@ RUN git get-release "${LIBEXTTEXTCAT_REPO}" "${LIBEXTTEXTCAT_VERSION}" /src/libe
 # als used by flatcurve fts plugin
 RUN git get-release "${XAPIAN_REPO}" "${XAPIAN_VERSION}" /src/xapian \
     && cd /src/xapian \
-    && touch xapian-applications/omega/.nobootstrap  xapian-bindings/.nobootstrap xapian-data/.nobootstrap xapian-maintainer-tools/.nobootstrap \
-    && ./bootstrap --download-tools=never \
+    && ./bootstrap --download-tools=never xapian-core \
     && ./configure --prefix=/usr --libdir=/usr/lib64  --disable-documentation \
     && make -j$(nproc) \
     && DESTDIR= make install \
