@@ -25,7 +25,7 @@ LABEL version.fts_xapian="${FTS_XAPIAN_VERSION}"
 
 # libexttextcat (no longer available as distro devel package)
 # renovate: datasource=github-tags depName=LibreOffice/libexttextcat
-ARG LIBEXTTEXTCAT_VERSION=v3.4.8 \
+ARG LIBEXTTEXTCAT_VERSION=v3.4.9 \
     LIBEXTTEXTCAT_REPO=https://github.com/LibreOffice/libexttextcat.git
 LABEL version.libexttextcat="${LIBEXTTEXTCAT_VERSION}"
 
