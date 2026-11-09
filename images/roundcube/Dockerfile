@@ -1,7 +1,7 @@
 FROM ghcr.io/project0/container-hub/base:20261106-402
 
 # renovate: datasource=github-releases depName=roundcube/roundcubemail
-ARG ROUNDCUBEMAIL_VERSION=1.7.5
+ARG ROUNDCUBEMAIL_VERSION=1.7.6
 LABEL version="${ROUNDCUBEMAIL_VERSION}"
 
 # public key
