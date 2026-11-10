@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base:20261106-402
+FROM ghcr.io/project0/container-hub/base:20261110-403
 
 # renovate: datasource=github-releases depName=roundcube/roundcubemail
 ARG ROUNDCUBEMAIL_VERSION=1.7.6
