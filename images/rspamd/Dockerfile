@@ -41,7 +41,7 @@ RUN git get-release "${RSPAMD_REPO}" "${RSPAMD_VERSION}*" rspamd \
 RUN find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20261110-403
+FROM ghcr.io/project0/container-hub/base:20261117-405
 
 ENV RSPAMD_USER=rspamd
 
