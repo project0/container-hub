@@ -4,7 +4,7 @@ ENV DESTDIR=/build
 WORKDIR /src
 
 # renovate: datasource=github-releases depName=rspamd/rspamd versioning=conan
-ARG RSPAMD_VERSION=4.3.0 \
+ARG RSPAMD_VERSION=4.3.1 \
     RSPAMD_REPO=https://github.com/rspamd/rspamd.git
 LABEL version="${RSPAMD_VERSION}"
 
