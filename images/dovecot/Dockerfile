@@ -1,4 +1,4 @@
-FROM ghcr.io/project0/container-hub/base-devel:20261125-409 AS builder
+FROM ghcr.io/project0/container-hub/base-devel:20261127-410 AS builder
 
 ENV DESTDIR=/build
 WORKDIR /src
@@ -86,7 +86,7 @@ RUN cp -aRv /usr/lib64/mariadb/* "${DESTDIR}/usr/lib64/" \
     && find /build -iname '*.la' -delete -o -iname *'*.a' -delete \
     && rm -rf /build/usr/include
 
-FROM ghcr.io/project0/container-hub/base:20261125-409
+FROM ghcr.io/project0/container-hub/base:20261127-410
 
 ENV DOVECOT_DHPARAM_BIT=4096
 
